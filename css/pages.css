@@ -1,0 +1,276 @@
+/* === Глобальные сбросы и базовые стили === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* === Основной контент страниц буквиц === */
+body {
+  font-family: 'Georgia', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+  background: #f9f7f4;                  /* Светло-бежевый фон — как старинная бумага */
+  color: #000000;                       /* Основной текст — чёрный, максимальная читаемость */
+  line-height: 1.5;                     /* Комфортная высота строки */
+  padding: max(40px, env(safe-area-inset-top)) 
+           max(20px, env(safe-area-inset-right)) 
+           60px 
+           max(20px, env(safe-area-inset-left));
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: justify;
+  font-size: 1em;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* === Контейнер изображения — float слева, обтекание текстом === */
+.image-container {
+  float: left;
+  margin: 0 20px 10px 0;
+  width: 158px;
+  height: 158px;
+  background: #fff;
+  border: 1px solid #e0d6c4;
+  border-radius: 8px;
+  position: relative;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Тень — отдельный слой для производительности */
+.image-container::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  transition: box-shadow 0.3s ease;
+}
+
+/* Эффект при нажатии (только на сенсорных) */
+.image-container:active::after {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateZ(0);
+}
+
+/* Отключаем hover-тень на сенсорных устройствах */
+@media (hover: none) and (pointer: coarse) {
+  .image-container:hover::after,
+  .image-container:focus::after {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* === Кликабельное изображение === */
+.clickable-image {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+/* Отключаем hover на мобильных */
+@media (hover: none) and (pointer: coarse) {
+  .clickable-image:hover {
+    opacity: 1;
+  }
+}
+
+/* === Заголовок и текст === */
+h1 {
+  color: #903521;
+  font-size: 2.5em;
+  text-align: center;
+  margin: 40px 0 30px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  clear: none;
+}
+
+/* === Основной стиль абзаца === */
+p {
+  margin: 15px 0;
+  text-indent: 20px;                    /* Красная строка */
+  font-size: 1.05em;
+  color: #000000;
+}
+
+/* Первый абзац — без красной строки, чтобы начать рядом с изображением */
+p:first-of-type {
+  text-indent: 0;
+}
+
+/* === Золотистая буквица — как в оригинале: в строке, цвет и жирность === */
+p::first-letter {
+  color: #E5B722;
+  font-weight: 800;
+  font-size: 1.1em;
+  margin-right: 0.1em;
+  line-height: 1;
+  display: inline-block;                /* Для стабильности в Chromium */
+}
+
+/* === Отключаем золотую буквицу ТОЛЬКО в выделенных абзацах === */
+p.final-paragraph::first-letter {
+  color: inherit;
+  font-weight: normal;
+  font-size: 1em;
+  margin-right: 0;
+  line-height: 1;
+  display: inline;
+}
+
+/* === Стиль для выделенных абзацев: жирный, цвет и курсив (при необходимости) === */
+p.final-paragraph {
+  font-weight: bold;
+  color: #903521;
+  text-indent: 20px;
+}
+
+/* Курсивное выделение — добавляется через класс .italic-highlight */
+.italic-highlight {
+  font-style: italic;
+}
+
+/* === Цитаты === */
+blockquote {
+  background: #f0e8d5;
+  border-left: 4px solid #b8a594;
+  margin: 25px 0;
+  padding: 15px 20px;
+  font-style: italic;
+  color: #D1685E;
+  border-radius: 0 8px 8px 0;
+}
+
+/* === Подвал === */
+footer {
+  text-align: center;
+  margin-top: 60px;
+  color: #999;
+  font-size: 0.9em;
+  padding: 20px 0;
+  border-top: 1px dashed #d4c8b5;
+  font-style: italic;
+}
+
+footer a {
+  color: #5a4a3a;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #333;
+  text-decoration: underline;
+}
+
+/* Оптимизация для экранов меньше 320px */
+@media (max-width: 320px) {
+  .image-container {
+    float: none;
+    margin: 0 auto 20px;
+    width: 100%;
+    max-width: 100%;
+    padding: 4px;
+  }
+
+  .clickable-image {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* Оптимизация отступов для маленьких экранов */
+@media (max-width: 375px) {
+  body {
+    padding: 20px;
+  }
+}
+
+/* Улучшение читаемости текста на мобильных */
+@media (max-width: 480px) {
+  p {
+    font-size: 1.1em;
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-size: 2em;
+    margin: 30px 0 20px;
+  }
+}
+
+/* Оптимизация для планшетов */
+@media (min-width: 768px) and (max-width: 1024px) {
+  body {
+    padding: 30px;
+  }
+
+  .image-container {
+    width: 180px;
+    height: 180px;
+    margin: 0 25px 15px 0;
+  }
+}
+
+/* Улучшение отзывчивости */
+body {
+  font-size: calc(16px + 0.5vw); /* Адаптивный размер шрифта */
+}
+
+p {
+  max-width: 100%;
+  hyphens: auto; /* Автоматические переносы */
+}
+
+/* Оптимизация для чтения */
+@media (prefers-reduced-motion: reduce) {
+  .image-container::after {
+    transition: none;
+  }
+}
+
+/* Оптимизация для Яндекс.Браузера */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  /* Специфичные стили для WebKit */
+  body {
+    font-size: calc(14px + 0.35vw);
+  }
+  
+  p {
+    hyphens: auto;
+    word-wrap: break-word;
+  }
+}
+
+/* Улучшение производительности */
+.image-container {
+  transform: translateZ(0); /* Композиция слоев */
+  will-change: transform, opacity;
+}
+
+/* Оптимизация текста */
+p {
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Решение проблем с переполнением */
+.content-wrapper {
+  overflow: auto;
+  width: 100%;
+}

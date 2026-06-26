@@ -1,0 +1,543 @@
+/* === Глобальные сбросы и базовые стили === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #79ADA0;
+  padding: 20px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* === Двухколоночный макет === */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+
+
+
+/* Левая колонка — пергамент */
+.sidebar-left {
+  background: #79ADA0 url('https://lh3.googleusercontent.com/pw/AP1GczNmmWGw_g2AbjjM92Dn2uM6D3vmRZH5MBxWQ6zxI2J7DPpVKG2W_-oQ8jh8NJR3ri8XCZvBqCU8WgpQny4YboE0DBf3IMMXcBVNAd1fiDa8I-dYa-wMcaB9SVCHGF5Zt-0r3S6yo31RbsMPOcqHpi8k=w1396-h875-s-no-gm?authuser=0')
+    center/cover fixed no-repeat;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  
+  /* ИЗМЕНЕНО: Растягиваем колонку по высоте и выравниваем контент к началу */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Навигационный контейнер на ПК */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column; /* Элементы идут друг под другом */
+  gap: 12px;              /* Расстояние между кнопками */
+  width: 100%;            /* Растягиваем на всю ширину колонки */
+}
+
+/* Стили для ссылок-кнопок */
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;              /* Расстояние между иконкой и текстом */
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.sidebar-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* === Объединённый адаптивный блок для маленьких экранов === */
+@media (max-width: 480px) {
+  
+  /* НОВОЕ: Перестраиваем общую сетку в одну колонку */
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  /* НОВОЕ: Превращаем левую колонку в горизонтальную панель */
+  .sidebar-left {
+    flex-direction: row;        /* Элементы меню встают в ряд */
+    justify-content: space-around; /* Равномерно распределяются по ширине */
+    align-items: center;
+    padding: 12px;
+    font-size: 16px;
+    background-attachment: scroll; /* Отключаем fixed фон на мобильных для плавной прокрутки */
+  }
+
+  /* Старые стили, которые уже были в вашем медиа-запросе, остаются без изменений: */
+  .family-tree {
+    max-width: 320px;
+    gap: 2px;
+  }
+
+  .tree-node {
+    border: 1px solid #f0f0f0;
+  }
+
+  .footer-logo {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-logo h3 {
+    font-size: 1.2em;
+  }
+
+  .footer-description {
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 480px) {
+  /* ... ваши старые стили для .layout и .sidebar-left ... */
+
+  /* Перестраиваем навигацию в горизонтальный ряд на всю ширину */
+  .sidebar-nav {
+    flex-direction: row;       /* Кнопки встают в один ряд */
+    justify-content: space-between; /* Равномерно распределяются */
+    flex-wrap: wrap;           /* Если экран слишком узкий, кнопки перенесутся */
+    gap: 8px;
+  }
+
+  /* Оптимизируем кнопки для мобильного экрана */
+  .sidebar-btn {
+    flex: 1 1 auto;            /* Кнопки делят свободное место поровну */
+    justify-content: center;   /* Текст и иконка по центру */
+    padding: 8px 12px;
+    font-size: 14px;           /* Немного уменьшаем шрифт */
+  }
+}
+
+
+
+
+
+/* Основной контент — фон древней бумаги */
+.content {
+  background: #79ADA0 url('https://lh3.googleusercontent.com/pw/AP1GczNmmWGw_g2AbjjM92Dn2uM6D3vmRZH5MBxWQ6zxI2J7DPpVKG2W_-oQ8jh8NJR3ri8XCZvBqCU8WgpQny4YboE0DBf3IMMXcBVNAd1fiDa8I-dYa-wMcaB9SVCHGF5Zt-0r3S6yo31RbsMPOcqHpi8k=w1396-h875-s-no-gm?authuser=0')
+    center/cover fixed no-repeat;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+}
+
+
+/* === ЕДИНСТВЕННЫЙ адаптивный блок — объединённый и исправленный === */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    min-height: auto;
+  }
+
+  .sidebar-left,
+  .content {
+    padding: 15px;
+  }
+
+  .sidebar-left {
+    font-size: 16px;
+  }
+
+  .container {
+    padding: 15px 0;
+  }
+
+  .family-tree {
+    max-width: 500px;
+    gap: 3px;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .tree-node {
+    border-radius: 3px;
+  }
+
+  .modal-content {
+    width: 100%;
+    border-radius: 0;
+    height: 100vh;
+    max-height: 100vh;
+  }
+
+  .close {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+  }
+
+  .nav-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .prev::before,
+  .next::before {
+    font-size: 20px;
+  }
+}
+
+/* === Объединённый адаптивный блок для маленьких экранов === */
+@media (max-width: 480px) {
+  .family-tree {
+    max-width: 320px;
+    gap: 2px;
+  }
+
+  .tree-node {
+    border: 1px solid #f0f0f0;
+  }
+
+  .footer-logo {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-logo h3 {
+    font-size: 1.2em;
+  }
+
+  .footer-description {
+    font-size: 0.9em;
+  }
+}
+
+/* === Поддержка touch-интерфейсов === */
+@media (hover: none) and (pointer: coarse) {
+  .tree-node {
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .tree-node:active {
+    transform: scale(0.98);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* === Оптимизация анимаций === */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* === Фокус для доступности === */
+/* Изменено: добавлен !important, чтобы перебить глобальное обнуление из первой части кода */
+.close:focus,
+.close:focus-visible,
+.nav-btn:focus,
+.nav-btn:focus-visible {
+  outline: 2px solid #00aaff !important;
+  outline-offset: 2px !important;
+}
+
+/* === Подвал сайта === */
+.site-footer {
+  margin-top: 60px;
+  padding: 40px 20px 30px;
+  background: #f0e8d5;
+  color: #9D3521; 
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+  border-top: 1px solid #d4c8b5;
+}
+
+.footer-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.footer-logo-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #9D3521; 
+}
+
+.footer-logo h3 {
+  font-size: 1.4em;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 1px;
+  color: #9D3521; 
+}
+
+.footer-description {
+  font-size: 0.95em;
+  font-style: italic;
+  margin: 0 0 16px;
+  color: #7a2c1b; 
+  line-height: 1.6;
+}
+
+.footer-copyright {
+  font-size: 0.85em;
+  color: #999; 
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* Второе дублирование @media (max-width: 480px) успешно удалено */
+
+/* === Белый текст для заголовка на главной === */
+
+.content h2 {
+  color: #FFFFFF !important; 
+}
+
+/* Стили для блока контактов */
+.contact-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.contact-info-card,
+.contact-form-card {
+  background: rgba(255, 255, 255, 0.6); /* Прозрачность 60 % */
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px); /* Сильное размытие фона */
+  -webkit-backdrop-filter: blur(10px);
+}
+.contact-info-card h2,
+.contact-form-card h2 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+/* Стили для контактной информации */
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  color: rgba(85, 85, 85, 0.9); /* Лёгкая прозрачность текста */
+}
+
+.contact-item i {
+  color: rgba(157, 53, 33, 0.9); /* Прозрачность иконок */
+  width: 20px;
+  text-align: center;
+}
+
+.contact-item a {
+  color: rgba(157, 53, 33, 0.9);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contact-item a:hover {
+  color: rgba(122, 44, 27, 0.95);
+  text-decoration: underline;
+}
+
+/* Стили для формы обратной связи */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(51, 51, 51, 0.95);
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: rgba(255, 255, 255, 0.7); /* Прозрачность полей 70 % */
+  border: 1px solid rgba(221, 221, 221, 0.5);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: rgba(157, 53, 33, 0.8);
+  box-shadow: 0 0 0 3px rgba(157, 53, 33, 0.15);
+}
+
+.form-group select {
+  cursor: pointer;
+}
+
+/* Кнопка отправки */
+.submit-btn {
+  background: linear-gradient(135deg, rgba(157, 53, 33, 0.8) 0%, rgba(122, 44, 27, 0.8) 100%);
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(157, 53, 33, 0.25);
+  background: linear-gradient(135deg, rgba(122, 44, 27, 0.95) 0%, rgba(90, 28, 21, 0.95) 100%);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+/* Примечание о обязательных полях */
+.form-note {
+  text-align: center;
+  color: rgba(119, 119, 119, 0.85);
+  font-size: 0.85em;
+  margin-top: 10px;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .contact-section {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .contact-info-card,
+  .contact-form-card {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8); /* Немного меньше прозрачности на мобильных */
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-info-card,
+  .contact-form-card {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.75); /* Ещё меньше прозрачности */
+  }
+  
+  .contact-details {
+    gap: 12px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+}
+
+
+
+
+/* Контейнер логотипа */
+.logo-container {
+  text-align: center;
+  margin-bottom: 25px; /* отступ от логотипа до секции контактов */
+}
+
+/* Стили для логотипа */
+.logo {
+  max-width: 100%;
+  height: auto;
+  max-height: 80px; /* максимальная высота логотипа */
+  display: block;
+  margin: 0 auto; /* центрирование по горизонтали */
+  border-radius: 8px; /* скругление углов, соответствует стилю карточек */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* лёгкая тень, гармонирует с карточками */
+  transition: transform 0.3s ease; /* плавная анимация при наведении */
+}
+
+/* Эффект при наведении на логотип */
+.logo:hover {
+  transform: scale(1.05); /* небольшое увеличение при наведении */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .logo-container {
+    margin-bottom: 20px;
+  }
+  .logo {
+    max-height: 60px; /* уменьшаем высоту на планшетах */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    max-height: 50px; /* ещё меньше на смартфонах */
+  }
+}
+
+
+/* Стили для блока с текстом о нас */
+.about-text {
+  background: rgba(255, 255, 255, 0.7); /* Лёгкая прозрачность для читаемости на фоне */
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+.about-text p {
+  margin-bottom: 15px; /* Отступ между абзацами */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .about-text {
+    padding: 20px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-text {
+    padding: 15px;
+    font-size: 14px;
+  }
+}
+

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Древнесловенская буквица</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" href="../az.png" type="image/png" />
+  <link rel="stylesheet" href="../css/navstyles.css" />
+</head>
+<body>
+  <div class="layout">
+    <!-- Левая колонка -->
+
+<div class="sidebar-left">
+  <nav class="sidebar-nav">
+    <a href="../index.html" class="sidebar-btn">
+      <i class="fas fa-home"></i> Главная
+    </a>
+    <a href="../nav/posts.html" class="sidebar-btn">
+      <i class="fas fa-book"></i> Статьи
+    </a>
+    <a href="../nav/info.html" class="sidebar-btn">
+      <i class="fas fa-info-circle"></i> О нас
+    </a>
+    <a href="../nav/contacts.html" class="sidebar-btn">
+      <i class="fas fa-cog"></i> Контакты
+    </a>
+  </nav>
+</div>
+
+
+    <!-- Основной контент -->
+    <div class="content">
+      <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Контакты</h2>
+
+      <div class="container">
+        <div class="family-tree">
+<!-- Блок для контактов -->
+
+<section class="contact-section">
+  <div class="contact-info-card">
+    <h2>Контактная информация</h2>
+    <div class="contact-details">
+		
+      <div class="contact-item">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Красноярск, Свердловский р-он, 660012</span>
+      </div>
+      
+<div class="contact-item">
+  <i class="fab fa-vk"></i>
+  <a href="https://vk.com/makzpain" target="_blank" rel="noopener noreferrer">Вконтакте</a>
+</div>
+
+<div class="contact-item">
+  <i class="fab fa-vk"></i>
+  <a href="https://vk.com/midgard957508" target="_blank" rel="noopener noreferrer">Коляды Даръ</a>
+</div>
+
+<div class="contact-item">
+  <span style="font-size: 1.2em;">💬</span>
+  <a href="https://max.ru/join/DkAIgaf_hVHjbD3rKJPll1tbwzsBe8ii8d2aao6yA5Y" target="_blank" rel="noopener noreferrer">MAX: Коляды Даръ</a>
+</div>
+
+
+      <div class="contact-item">
+        <i class="fas fa-envelope"></i>
+        <a href="mailto:info@example.com">25online@mail.ru</a>
+      </div>
+      <br><br><br>
+      
+      <div class="logo-container">
+  <a href="../index.html">
+    <img src="../az.png" alt="Логотип компании" class="logo">
+  </a>
+</div>
+      
+    </div>
+  </div>
+
+  <div class="contact-form-card">
+	  
+   <h2>Напишите нам</h2>
+<form id="feedbackForm" method="post">
+  <div class="form-group">
+    <label for="name">Имя *</label>
+    <input type="text" id="name" name="name" required placeholder="Введите ваше имя">
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email *</label>
+    <input type="email" id="email" name="email" required placeholder="Введите ваш email">
+  </div>
+
+  <div class="form-group">
+    <label for="subject">Тема</label>
+    <select id="subject" name="subject">
+      <option value="">Выберите тему</option>
+      <option value="question">Вопрос по проекту</option>
+      <option value="cooperation">Сотрудничество</option>
+      <option value="other">Другое</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="message">Сообщение *</label>
+    <textarea id="message" name="message" required placeholder="Опишите ваш вопрос или предложение..." rows="5"></textarea>
+  </div>
+
+  <button type="submit" class="submit-btn">
+    <i class="fas fa-paper-plane"></i> Отправить сообщение
+  </button>
+  <p class="form-note">* — обязательные для заполнения поля</p>
+</form>
+
+   
+  </div>
+</section>
+
+<!-- Блок для контактов -->
+      </div>
+    </div>
+  </div>
+ </div>
+  
+    <!-- Подвал сайта -->
+<footer style="text-align:center; padding:20px; font:italic 0.8em 'Playfair Display',serif; color:#5a4a3a; border-top:1px dashed #d4c8b5;">&copy; Буквица • Начало Слова</footer>
+  <!-- Скрипт внизу body -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="../js/contactsscript.js"></script>
+</body>
+</html>

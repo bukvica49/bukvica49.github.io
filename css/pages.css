@@ -293,13 +293,15 @@ p {
 
 
 
-/* Контейнер изображения — теперь по центру, без float */
-.image-container {
-  /* float: left; ← удали эту строку */
-  margin: 20px auto; /* auto по бокам = центрирование */
-  width: 158px;      /* можно оставить, но лучше сделать относительным */
-  max-width: 90%;    /* на мобильных не шире 90% экрана */
-  height: auto;      /* высота под пропорции картинки */
+
+
+
+
+  /* float: left; — уже удалён, хорошо */
+  margin: 20px auto;
+  width: auto;           /* ← ключевое изменение: не фиксируем 158px */
+  max-width: 100%;       /* чтобы вообще никуда не вылезало */
+  height: auto;
   background: #fff;
   border: 1px solid #e0d6c4;
   border-radius: 8px;
@@ -314,27 +316,29 @@ p {
   -webkit-backface-visibility: hidden;
 }
 
-/* Картинка внутри контейнера */
+/* Ограничиваем размер картинки внутри контейнера */
 .clickable-image {
-  width: 100%;       /* на всю ширину контейнера */
-  height: auto;      /* пропорции сохраняются */
+  width: 100%;           /* на всю ширину контейнера */
+  max-width: 400px;      /* опционально: не больше 400px на больших экранах */
+  height: auto;
   object-fit: contain;
   border-radius: 6px;
   display: block;
   transition: opacity 0.3s ease;
   cursor: pointer;
-  max-height: 400px; /* опционально: ограничить высоту на больших экранах */
+  max-height: 500px;    /* защита от гигантских картинок */
 }
 @media (max-width: 320px) {
   .image-container {
-    margin: 20px auto;
-    width: 100%;
-    max-width: 100%;
+    margin: 15px auto;   /* чуть меньше отступы */
     padding: 4px;
+    width: 100%;         /* явно растягиваем на всю ширину */
+    max-width: 100%;
   }
-
   .clickable-image {
     width: 100%;
     height: auto;
+    max-width: 100%;     /* страховка */
   }
 }
+

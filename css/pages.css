@@ -290,3 +290,51 @@ p {
 .article-footer a {
   color: #336;
 }
+
+
+
+/* Контейнер изображения — теперь по центру, без float */
+.image-container {
+  /* float: left; ← удали эту строку */
+  margin: 20px auto; /* auto по бокам = центрирование */
+  width: 158px;      /* можно оставить, но лучше сделать относительным */
+  max-width: 90%;    /* на мобильных не шире 90% экрана */
+  height: auto;      /* высота под пропорции картинки */
+  background: #fff;
+  border: 1px solid #e0d6c4;
+  border-radius: 8px;
+  position: relative;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Картинка внутри контейнера */
+.clickable-image {
+  width: 100%;       /* на всю ширину контейнера */
+  height: auto;      /* пропорции сохраняются */
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+  max-height: 400px; /* опционально: ограничить высоту на больших экранах */
+}
+@media (max-width: 320px) {
+  .image-container {
+    margin: 20px auto;
+    width: 100%;
+    max-width: 100%;
+    padding: 4px;
+  }
+
+  .clickable-image {
+    width: 100%;
+    height: auto;
+  }
+}

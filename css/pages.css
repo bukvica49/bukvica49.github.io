@@ -295,5 +295,27 @@ p {
 
 
 
+.center-image-block {
+  display: block;
+  margin: 30px auto;          /* отступы сверху/снизу, авто по бокам */
+  max-width: 100%;             /* не шире экрана */
+  width: 400px;                /* желаемая ширина на больших экранах */
+  height: auto;
+  border: 1px solid #e0d6c4;
+  border-radius: 8px;
+  padding: 8px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.center-image-block img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;              /* убирает лишние отступы снизу */
+}
+
+
 
 

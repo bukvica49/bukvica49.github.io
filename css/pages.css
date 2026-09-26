@@ -287,22 +287,6 @@ p {
 }
 
 
-
-.responsive-center-img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100%;      /* не шире экрана */
-  height: auto;         /* сохраняет пропорции */
-}
-
-@media (max-width: 480px) {
-  .responsive-center-img {
-    max-width: 80%;
-  }
-}
-
-
 .article-footer a {
   color: #336;
 }

@@ -136,3 +136,57 @@ document.addEventListener("DOMContentLoaded", () => {
   resizeFamilyTree();
   window.addEventListener("resize", resizeFamilyTree);
 });
+
+
+
+
+
+function adaptArticleLinks() {
+  const isMobile = window.innerWidth <= 768;
+
+  document.querySelectorAll('.article-link').forEach(link => {
+    // Находим иконку — она должна быть первой вложенностью
+    const icon = link.querySelector('.link-icon');
+    if (!icon) return;
+
+    const mobileTitle = link.getAttribute('data-mobile-title');
+    const originalText = link.dataset.originalFullText || '';
+
+    // Получаем только текстовый узел (без иконки)
+    const textContent = Array.from(link.childNodes)
+      .filter(node => node.nodeType === Node.TEXT_NODE)
+      .map(node => node.textContent.trim())
+      .join(' ')
+      .trim();
+
+    if (mobileTitle && isMobile) {
+      // Оставляем иконку на месте, меняем только текст
+      link.textContent = '';          // очищаем всё
+      link.appendChild(icon);         // возвращаем иконку
+      link.insertAdjacentText('beforeend', mobileTitle);
+    } else if (originalText) {
+      // Возвращаем полный текст
+      link.textContent = '';
+      link.appendChild(icon);
+      link.insertAdjacentText('beforeend', originalText);
+    }
+  });
+}
+
+// Инициализация: сохраняем полный текст (без иконки) один раз
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.article-link').forEach(link => {
+    const icon = link.querySelector('.link-icon');
+    if (icon) {
+      const textNodes = Array.from(link.childNodes).filter(n => n.nodeType === Node.TEXT_NODE);
+      const fullText = textNodes.map(n => n.textContent.trim()).join(' ').trim();
+      link.dataset.originalFullText = fullText;
+    } else {
+      link.dataset.originalFullText = link.textContent.trim();
+    }
+  });
+
+  adaptArticleLinks();
+});
+
+window.addEventListener('resize', adaptArticleLinks);

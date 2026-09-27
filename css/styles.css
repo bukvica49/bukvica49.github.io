@@ -575,3 +575,43 @@ html, body, :focus {
     margin-right: 6px;
   }
 }
+
+
+
+
+
+.article-link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;                /* разрешает перенос иконки и текста */
+  word-break: break-word;          /* переносит длинные слова */
+  overflow-wrap: break-word;       /* запасной вариант для переноса */
+  line-height: 1.3;                /* компактнее строки */
+
+  background: rgba(255, 255, 255, 0.75);
+  color: #4A3823;
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  border: 1px solid rgba(212, 185, 138, 0.4);
+}
+
+@media (max-width: 480px) {
+  .articles-list {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .article-link {
+    justify-content: center;       /* центрируем иконку + текст */
+    text-align: center;            /* текст по центру */
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    word-break: break-word;
+    flex-wrap: wrap;
+  }
+}

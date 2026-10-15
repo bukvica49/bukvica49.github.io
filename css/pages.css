@@ -11,9 +11,9 @@ body {
   background: #f9f7f4;                  /* Светло-бежевый фон — как старинная бумага */
   color: #000000;                       /* Основной текст — чёрный, максимальная читаемость */
   line-height: 1.5;                     /* Комфортная высота строки */
-  padding: max(40px, env(safe-area-inset-top)) 
-           max(20px, env(safe-area-inset-right)) 
-           60px 
+  padding: max(40px, env(safe-area-inset-top))
+           max(20px, env(safe-area-inset-right))
+           60px
            max(20px, env(safe-area-inset-left));
   max-width: 800px;
   margin: 0 auto;
@@ -250,7 +250,7 @@ p {
   body {
     font-size: calc(14px + 0.35vw);
   }
-  
+
   p {
     hyphens: auto;
     word-wrap: break-word;
@@ -275,31 +275,95 @@ p {
   width: 100%;
 }
 
-
-
-
+/* =========================================
+   Подвал статьи с кнопками навигации
+   ========================================= */
 .article-footer {
-  margin-top: 24px;
-  padding: 12px 0;
-  border-top: 1px dashed #88a;
-  font-size: 0.8rem;
-  color: #666;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px dashed rgba(120, 90, 50, 0.35);
+  font-size: inherit;
+  color: inherit;
 }
 
-
-.article-footer a {
-  color: #336;
+/* Общая база для обеих кнопок */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  font-size: 15px;
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, #6b4a2a 0%, #8b6a3a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.4px;
+  white-space: nowrap;
 }
 
+.action-btn:hover {
+  background: linear-gradient(135deg, #8b6a3a 0%, #a8823e 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
 
+.action-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
 
+.action-btn:focus-visible {
+  outline: 2px solid #00aaff;
+  outline-offset: 2px;
+}
 
+/* Вариация для ссылки на источник */
+.action-btn.source {
+  background: linear-gradient(135deg, #4a5a2a 0%, #6a7a3a 100%);
+}
 
+.action-btn.source:hover {
+  background: linear-gradient(135deg, #6a7a3a 0%, #8a9a3e 100%);
+}
+
+.action-btn .icon {
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+/* Мобильная адаптация — кнопки во всю ширину */
+@media (max-width: 480px) {
+  .article-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .action-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+/* =========================================
+   Центральные изображения в статьях
+   ========================================= */
 .center-image-block {
   display: block;
   margin: 30px auto;          /* отступы сверху/снизу, авто по бокам */
-  max-width: 100%;             /* не шире экрана */
-  width: 400px;                /* желаемая ширина на больших экранах */
+  max-width: 100%;            /* не шире экрана */
+  width: 400px;               /* желаемая ширина на больших экранах */
   height: auto;
   border: 1px solid #e0d6c4;
   border-radius: 8px;
@@ -313,9 +377,4 @@ p {
   height: auto;
   object-fit: contain;
   border-radius: 6px;
-  display: block;              /* убирает лишние отступы снизу */
-}
-
-
-
-
+  display: block;             /* убирает лишние отступы снизу */

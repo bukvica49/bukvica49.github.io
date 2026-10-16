@@ -344,17 +344,22 @@ p {
   line-height: 1;
 }
 
-/* Мобильная адаптация — кнопки во всю ширину */
+/* Мобильная адаптация — кнопки в ряд, каждая ≈ половина ширины */
 @media (max-width: 480px) {
   .article-footer {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;            /* ← было column: снова в строку */
+    flex-wrap: nowrap;              /* обе кнопки на одной линии */
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
   }
+
   .action-btn {
+    flex: 1 1 calc(50% - 4px);      /* каждая ровно половина минус половина gap */
+    max-width: calc(50% - 4px);     /* страховка, чтобы не «расползались» */
     justify-content: center;
-    width: 100%;
-    padding: 5px 12px;            /* ← чуть выше на тач-экранах — удобнее нажимать */
-    font-size: 14px;
+    padding: 6px 10px;              /* чуть выше базы для палец-тапа */
+    font-size: 13px;
   }
 }
 /* =========================================

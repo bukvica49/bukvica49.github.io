@@ -83,7 +83,16 @@
   <div class="contact-form-card">
 	  
    <h2>Напишите нам</h2>
-<form id="feedbackForm" method="post">
+<form id="feedbackForm" action="https://formsubmit.co/25online@mail.ru" method="POST">
+
+  <!-- Служебные поля FormSubmit — на дизайн не влияют, не отображаются -->
+  <input type="hidden" name="_subject" value="Сообщение с сайта bukvica49.github.io">
+  <input type="hidden" name="_template" value="table">
+  <input type="hidden" name="_captcha" value="true">
+  <input type="hidden" name="_next" value="https://bukvica49.github.io/thanks.html">
+  <!-- Honeypot: живой человек не заполнит, бот заполнит — такие письма FormSubmit отбросит -->
+  <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
   <div class="form-group">
     <label for="name">Имя *</label>
     <input type="text" id="name" name="name" required placeholder="Введите ваше имя">
@@ -98,9 +107,9 @@
     <label for="subject">Тема</label>
     <select id="subject" name="subject">
       <option value="">Выберите тему</option>
-      <option value="question">Вопрос по проекту</option>
-      <option value="cooperation">Сотрудничество</option>
-      <option value="other">Другое</option>
+      <option value="Вопрос по проекту">Вопрос по проекту</option>
+      <option value="Сотрудничество">Сотрудничество</option>
+      <option value="Другое">Другое</option>
     </select>
   </div>
 
@@ -127,9 +136,6 @@
   
     <!-- Подвал сайта -->
 <footer style="text-align:center; padding:20px; font:italic 0.8em 'Playfair Display',serif; color:#5a4a3a; border-top:1px dashed #d4c8b5;">&copy; Буквица • Начало Слова</footer>
-  <!-- Скрипт внизу body -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script src="../js/contactsscript.js"></script>
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
     (function(m,e,t,r,i,k,a){

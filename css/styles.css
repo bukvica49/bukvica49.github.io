@@ -610,3 +610,16 @@ html, body, :focus {
   }
 }
 
+/* ═══ Принудительное удаление радиуса у панелей на ВСЕХ разрешениях ═══ */
+.sidebar-left,
+.content,
+.footer-bar {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Внешнее скругление — только у контейнера */
+.layout {
+  border-radius: 12px;
+  overflow: hidden;
+}

@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="icon" href="../az.png" type="image/png" />
-  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/navstyles.css" />
 </head>
 <body>
   <div class="layout">
@@ -31,63 +31,62 @@
 
     <!-- Основной контент -->
     <div class="content">
-      <h2 style="text-align: center; color: #fff; margin-bottom: 32px;">Статьи</h2>
+      <h2 style="text-align: center; margin-bottom: 32px;">Статьи</h2>
 
-      <!-- Вертикальная навигация по статьям -->
       <aside class="articles-nav">
         <h3 class="nav-title">Разделы статей</h3>
         <nav class="articles-list">
-          <!-- Все ссылки теперь открываются в модалке -->
           <a href="../posts/post1.html" class="article-link modal-link">
             <span class="link-icon">📖</span> Суть образного мышления
           </a>
-			
+
           <a href="../posts/post2.html" class="article-link modal-link">
             <span class="link-icon">📖</span> Азъ есмь имярек
           </a>
-			
-		  <a href="../posts/post3.html" class="article-link modal-link" data-mobile-title="Оживление космоса в сознании">
-			  <span class="link-icon">📖</span>
-				  Объективная иллюзорная реальность — оживление космоса в сознании
-		 </a>
 
-			<a href="../posts/post4.html" class="article-link modal-link" data-mobile-title="Театр">
-			  <span class="link-icon">📖</span>
-				  Театр
-			</a>
-
-			<a href="../posts/post5.html" class="article-link modal-link" data-mobile-title="Изменение по собственной воле">
-			  <span class="link-icon">📖</span>
-			  Способность к изменению по собственной воле
-			</a>
-
-			<a href="../posts/post6.html" class="article-link modal-link" data-mobile-title="Циклы развития">
-			  <span class="link-icon">📖</span>
-			  Циклы развития с точки зрения Буквицы
-			</a>
-			
-			<a href="../posts/post7.html" class="article-link modal-link" data-mobile-title="Тридевять Земель">
-			  <span class="link-icon">📖</span>
-				Тридевять Земель
-			</a>
-
-			   <a href="../posts/post8.html" class="article-link modal-link" data-mobile-title="Эпоха религиозного фанатизма">
-			     <span class="link-icon">📖</span>
-			     Эпоха религиозного фанатизма
-  			   </a>
-          <!--<a href="../pages/page10.html" class="article-link modal-link">
-            <span class="link-icon">���n> Примеры и тексты
+          <a href="../posts/post3.html" class="article-link modal-link" data-mobile-title="Оживление космоса в сознании">
+            <span class="link-icon">📖</span>
+            Объективная иллюзорная реальность — оживление космоса в сознании
           </a>
-          <a href="../nav/articles/istoria.html" class="article-link modal-link">
-            <span class="link-icon">���span> История и корни
+
+          <a href="../posts/post4.html" class="article-link modal-link" data-mobile-title="Театр">
+            <span class="link-icon">📖</span> Театр
           </a>
-          <a href="../nav/articles/slovar.html" class="article-link modal-link">
-            <span class="link-icon">���n> Словарь терминов
-          </a> -->
+
+          <a href="../posts/post5.html" class="article-link modal-link" data-mobile-title="Изменение по собственной воле">
+            <span class="link-icon">📖</span>
+            Способность к изменению по собственной воле
+          </a>
+
+          <a href="../posts/post6.html" class="article-link modal-link" data-mobile-title="Циклы развития">
+            <span class="link-icon">📖</span>
+            Циклы развития с точки зрения Буквицы
+          </a>
+
+          <a href="../posts/post7.html" class="article-link modal-link" data-mobile-title="Тридевять Земель">
+            <span class="link-icon">📖</span> Тридевять Земель
+          </a>
+
+          <a href="../posts/post8.html" class="article-link modal-link" data-mobile-title="Эпоха религиозного фанатизма">
+            <span class="link-icon">📖</span> Эпоха религиозного фанатизма
+          </a>
         </nav>
       </aside>
     </div>
+
+    <!-- ═══ ПОДВАЛ: внутри .layout, справа ═══ -->
+    <footer class="footer-bar">
+      <span>&copy; <span id="footer-year">2026</span> Буквица • Начало Слова</span>
+    </footer>
+    <!-- ═══ /ПОДВАЛ ═══ -->
   </div>
+
+  <script>
+    (function(){
+      var y = document.getElementById('footer-year');
+      if (y) y.textContent = new Date().getFullYear();
+    })();
+  </script>
 
   <!-- Модальное окно -->
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Просмотр статьи">
@@ -109,11 +108,8 @@
 
   <script src="../js/postscript.js"></script>
 
-  <footer style="text-align:center; padding:20px; font:italic 0.8em 'Playfair Display',serif; color:#5a4a3a; border-top:1px dashed #d4c8b5;">
-    &copy; Буквица • Начало Слова
-  </footer>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
         m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
         m[i].l=1*new Date();
@@ -122,8 +118,8 @@
     })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=113705409', 'ym');
 
     ym(113705409, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/113705409" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/113705409" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 </body>
 </html>

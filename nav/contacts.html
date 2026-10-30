@@ -12,142 +12,142 @@
 <body>
   <div class="layout">
     <!-- Левая колонка -->
-
-<div class="sidebar-left">
-  <nav class="sidebar-nav">
-    <a href="../index.html" class="sidebar-btn">
-      <i class="fas fa-home"></i> Главная
-    </a>
-    <a href="../nav/posts.html" class="sidebar-btn">
-      <i class="fas fa-book"></i> Статьи
-    </a>
-    <a href="../nav/info.html" class="sidebar-btn">
-      <i class="fas fa-info-circle"></i> О нас
-    </a>
-    <a href="../nav/contacts.html" class="sidebar-btn">
-      <i class="fas fa-cog"></i> Контакты
-    </a>
-  </nav>
-</div>
-
+    <div class="sidebar-left">
+      <nav class="sidebar-nav">
+        <a href="../index.html" class="sidebar-btn">
+          <i class="fas fa-home"></i> Главная
+        </a>
+        <a href="../nav/posts.html" class="sidebar-btn">
+          <i class="fas fa-book"></i> Статьи
+        </a>
+        <a href="../nav/info.html" class="sidebar-btn">
+          <i class="fas fa-info-circle"></i> О нас
+        </a>
+        <a href="../nav/contacts.html" class="sidebar-btn">
+          <i class="fas fa-cog"></i> Контакты
+        </a>
+      </nav>
+    </div>
 
     <!-- Основной контент -->
     <div class="content">
-      <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Контакты</h2>
+      <h2 style="text-align: center; margin-bottom: 20px;">Контакты</h2>
 
-      <div class="container">
-        <div class="family-tree">
-<!-- Блок для контактов -->
+      <!-- ═══ Контактный блок (напрямую в .content, БЕЗ family-tree) ═══ -->
+      <section class="contact-section">
+        <div class="contact-info-card">
+          <h2>Контактная информация</h2>
+          <div class="contact-details">
 
-<section class="contact-section">
-  <div class="contact-info-card">
-    <h2>Контактная информация</h2>
-    <div class="contact-details">
-		
-      <div class="contact-item">
-        <i class="fas fa-map-marker-alt"></i>
-        <span>Красноярск, Свердловский р-он, 660012</span>
-      </div>
-      
-<div class="contact-item">
-  <i class="fab fa-vk"></i>
-  <a href="https://vk.com/makzpain" target="_blank" rel="noopener noreferrer">Вконтакте</a>
-</div>
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Красноярск, Свердловский р-он, 660012</span>
+            </div>
 
-<div class="contact-item">
-  <i class="fab fa-vk"></i>
-  <a href="https://vk.com/midgard957508" target="_blank" rel="noopener noreferrer">Коляды Даръ</a>
-</div>
+            <div class="contact-item">
+              <i class="fab fa-vk"></i>
+              <a href="https://vk.com/makzpain" target="_blank" rel="noopener noreferrer">Вконтакте</a>
+            </div>
 
-<div class="contact-item">
-  <span style="font-size: 1.2em;">💬</span>
-  <a href="https://max.ru/channel_kolo24" target="_blank" rel="noopener noreferrer">MAX: Коляды Даръ</a>
-</div>
+            <div class="contact-item">
+              <i class="fab fa-vk"></i>
+              <a href="https://vk.com/midgard957508" target="_blank" rel="noopener noreferrer">Коляды Даръ</a>
+            </div>
 
+            <div class="contact-item">
+              <span style="font-size: 1.2em;">💬</span>
+              <a href="https://max.ru/channel_kolo24" target="_blank" rel="noopener noreferrer">MAX: Коляды Даръ</a>
+            </div>
 
-      <div class="contact-item">
-        <i class="fas fa-envelope"></i>
-        <a href="mailto:info@example.com">25online@mail.ru</a>
-      </div>
-      <br><br><br>
-      
-      <div class="logo-container">
-  <a href="../index.html">
-    <img src="../az.png" alt="Логотип компании" class="logo">
-  </a>
-</div>
-      
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <a href="mailto:25online@mail.ru">25online@mail.ru</a>
+            </div>
+
+            <br><br><br>
+
+            <div class="logo-container">
+              <a href="../index.html">
+                <img src="../az.png" alt="Логотип компании" class="logo">
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="contact-form-card">
+          <h2>Напишите нам</h2>
+          <form id="feedbackForm" action="https://formsubmit.co/25online@mail.ru" method="POST">
+
+            <!-- Служебные поля FormSubmit — не отображаются -->
+            <input type="hidden" name="_subject" value="Сообщение с сайта bukvica49.github.io">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="true">
+            <input type="hidden" name="_next" value="https://bukvica49.github.io/thanks.html">
+            <!-- Honeypot -->
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+            <div class="form-group">
+              <label for="name">Имя *</label>
+              <input type="text" id="name" name="name" required placeholder="Введите ваше имя">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required placeholder="Введите ваш email">
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Тема</label>
+              <select id="subject" name="subject">
+                <option value="">Выберите тему</option>
+                <option value="Вопрос по проекту">Вопрос по проекту</option>
+                <option value="Сотрудничество">Сотрудничество</option>
+                <option value="Другое">Другое</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Сообщение *</label>
+              <textarea id="message" name="message" required placeholder="Опишите ваш вопрос или предложение..." rows="5"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+              <i class="fas fa-paper-plane"></i> Отправить сообщение
+            </button>
+            <p class="form-note">* — обязательные для заполнения поля</p>
+          </form>
+        </div>
+      </section>
+
     </div>
+
+    <!-- ═══ ПОДВАЛ: внутри .layout, справа ═══ -->
+    <footer class="footer-bar">
+      <span>&copy; <span id="footer-year">2026</span> Буквица • Начало Слова</span>
+    </footer>
+    <!-- ═══ /ПОДВАЛ ═══ -->
   </div>
 
-  <div class="contact-form-card">
-	  
-   <h2>Напишите нам</h2>
-<form id="feedbackForm" action="https://formsubmit.co/25online@mail.ru" method="POST">
+  <script>
+    (function(){
+      var y = document.getElementById('footer-year');
+      if (y) y.textContent = new Date().getFullYear();
+    })();
+  </script>
 
-  <!-- Служебные поля FormSubmit — на дизайн не влияют, не отображаются -->
-  <input type="hidden" name="_subject" value="Сообщение с сайта bukvica49.github.io">
-  <input type="hidden" name="_template" value="table">
-  <input type="hidden" name="_captcha" value="true">
-  <input type="hidden" name="_next" value="https://bukvica49.github.io/thanks.html">
-  <!-- Honeypot: живой человек не заполнит, бот заполнит — такие письма FormSubmit отбросит -->
-  <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=113705409', 'ym');
 
-  <div class="form-group">
-    <label for="name">Имя *</label>
-    <input type="text" id="name" name="name" required placeholder="Введите ваше имя">
-  </div>
-
-  <div class="form-group">
-    <label for="email">Email *</label>
-    <input type="email" id="email" name="email" required placeholder="Введите ваш email">
-  </div>
-
-  <div class="form-group">
-    <label for="subject">Тема</label>
-    <select id="subject" name="subject">
-      <option value="">Выберите тему</option>
-      <option value="Вопрос по проекту">Вопрос по проекту</option>
-      <option value="Сотрудничество">Сотрудничество</option>
-      <option value="Другое">Другое</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label for="message">Сообщение *</label>
-    <textarea id="message" name="message" required placeholder="Опишите ваш вопрос или предложение..." rows="5"></textarea>
-  </div>
-
-  <button type="submit" class="submit-btn">
-    <i class="fas fa-paper-plane"></i> Отправить сообщение
-  </button>
-  <p class="form-note">* — обязательные для заполнения поля</p>
-</form>
-
-   
-  </div>
-</section>
-
-<!-- Блок для контактов -->
-      </div>
-    </div>
-  </div>
- </div>
-  
-    <!-- Подвал сайта -->
-<footer style="text-align:center; padding:20px; font:italic 0.8em 'Playfair Display',serif; color:#5a4a3a; border-top:1px dashed #d4c8b5;">&copy; Буквица • Начало Слова</footer>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=113705409', 'ym');
-
-    ym(113705409, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/113705409" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+      ym(113705409, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/113705409" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 </body>
 </html>

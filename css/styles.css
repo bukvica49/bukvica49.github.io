@@ -1,3 +1,9 @@
+/* ═══════════════════════════════════════════════════════
+   БУКВИЦА — styles.css
+   Чистая версия: без устаревших стилей, без «Наверх».
+   Макет: sidebar слева до низа, справа content + footer.
+   ═══════════════════════════════════════════════════════ */
+
 /* === Глобальные сбросы и базовые стили === */
 * {
   margin: 0;
@@ -13,25 +19,29 @@ body {
   color: #333;
 }
 
-/* === Двухколоночный макет === */
+/* === Двухколоночный макет ===
+   grid-template-areas: sidebar — 2 строки («до низа»),
+   content — сверху справа, footer — снизу справа. */
 .layout {
   display: grid;
   grid-template-columns: 1fr 3fr;
-  gap: 20px;
+  grid-template-areas:
+    "sidebar content"
+    "sidebar footer";
+  gap: 2px;
   max-width: 1400px;
   margin: 0 auto;
-  min-height: 100vh;
 }
 
 /* Левая колонка — пергамент */
 .sidebar-left {
+  grid-area: sidebar;
   background: #79ADA0 url('https://lh3.googleusercontent.com/pw/AP1GczNmmWGw_g2AbjjM92Dn2uM6D3vmRZH5MBxWQ6zxI2J7DPpVKG2W_-oQ8jh8NJR3ri8XCZvBqCU8WgpQny4YboE0DBf3IMMXcBVNAd1fiDa8I-dYa-wMcaB9SVCHGF5Zt-0r3S6yo31RbsMPOcqHpi8k=w1396-h875-s-no-gm?authuser=0')
     center/cover fixed no-repeat;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;                     /* ← было 12px */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); /* ← было 0 2px 10px 0.1 */
 
-  /* Растягиваем колонку по высоте и выравниваем контент к началу */
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -44,19 +54,17 @@ body {
   font-weight: 300;
 }
 
-/* Навигационный контейнер на ПК */
 .sidebar-nav {
   display: flex;
-  flex-direction: column; /* Элементы идут друг под другом */
-  gap: 12px;              /* Расстояние между кнопками */
-  width: 100%;            /* Растягиваем на всю ширину колонки */
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
 }
 
-/* Стили для ссылок-кнопок */
 .sidebar-btn {
   display: flex;
   align-items: center;
-  gap: 10px;              /* Расстояние между иконкой и текстом */
+  gap: 10px;
   color: #fff;
   text-decoration: none;
   padding: 10px 15px;
@@ -69,18 +77,18 @@ body {
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* Основной контент — фон древней бумаги */
+/* === Основной контент === */
 .content {
+  grid-area: content;
   background: #79ADA0 url('https://lh3.googleusercontent.com/pw/AP1GczNmmWGw_g2AbjjM92Dn2uM6D3vmRZH5MBxWQ6zxI2J7DPpVKG2W_-oQ8jh8NJR3ri8XCZvBqCU8WgpQny4YboE0DBf3IMMXcBVNAd1fiDa8I-dYa-wMcaB9SVCHGF5Zt-0r3S6yo31RbsMPOcqHpi8k=w1396-h875-s-no-gm?authuser=0')
     center/cover fixed no-repeat;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;                     /* ← было 12px */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); /* ← было 0 2px 15px 0.1 */
   overflow: auto;
 }
 
-/* === Сетка 7×7 — адаптивная, масштабируемая === */
-
+/* === Сетка 7×7 === */
 .container {
   display: flex;
   justify-content: center;
@@ -153,6 +161,11 @@ body {
   justify-content: center;
   align-items: center;
   backdrop-filter: blur(2px);
+}
+
+/* Дублирующий триггер для .modal.open (если JS использует классы) */
+.modal.open {
+  display: flex;
 }
 
 .modal-content {
@@ -267,22 +280,23 @@ body {
   color: white;
 }
 
-/* Отключение стандартного контура фокуса для всего документа при управлении с клавиатуры */
 html, body, :focus {
   outline: none !important;
 }
 
-/* Если рамка появляется внутри iframe (модального окна) */
 #modal-iframe:focus {
   outline: none !important;
 }
 
-/* === Адаптивные стили === */
+/* === Адаптив: планшет === */
 @media (max-width: 768px) {
   .layout {
     grid-template-columns: 1fr;
-    gap: 15px;
-    min-height: auto;
+    grid-template-areas:
+      "sidebar"
+      "content"
+      "footer";
+    gap: 8px;
   }
 
   .sidebar-left,
@@ -334,36 +348,29 @@ html, body, :focus {
   }
 }
 
+/* === Адаптив: мобильный === */
 @media (max-width: 480px) {
-  /* Перестраиваем общую сетку в одну колонку */
-  .layout {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  /* Превращаем левую колонку в горизонтальную панель */
   .sidebar-left {
-    flex-direction: row;        /* Элементы меню встают в ряд */
-    justify-content: space-around; /* Равномерно распределяются по ширине */
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
     padding: 12px;
     font-size: 16px;
-    background-attachment: scroll; /* Отключаем fixed фон на мобильных для плавной прокрутки */
+    background-attachment: scroll;
   }
 
   .sidebar-nav {
-    flex-direction: row;       /* Кнопки встают в один ряд */
-    justify-content: space-between; /* Равномерно распределяются */
-    flex-wrap: wrap;           /* Если экран слишком узкий, кнопки перенесутся */
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 8px;
   }
 
-  /* Оптимизируем кнопки для мобильного экрана */
   .sidebar-btn {
-    flex: 1 1 auto;            /* Кнопки делят свободное место поровну */
-    justify-content: center;   /* Текст и иконка по центру */
+    flex: 1 1 auto;
+    justify-content: center;
     padding: 8px 12px;
-    font-size: 14px;           /* Немного уменьшаем шрифт */
+    font-size: 14px;
   }
 
   .family-tree {
@@ -374,22 +381,9 @@ html, body, :focus {
   .tree-node {
     border: 1px solid #f0f0f0;
   }
-
-  .footer-logo {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .footer-logo h3 {
-    font-size: 1.2em;
-  }
-
-  .footer-description {
-    font-size: 0.9em;
-  }
 }
 
-/* === Поддержка touch‑интерфейсов === */
+/* === Поддержка touch-интерфейсов === */
 @media (hover: none) and (pointer: coarse) {
   .tree-node {
     transform: none !important;
@@ -420,70 +414,13 @@ html, body, :focus {
   outline-offset: 2px !important;
 }
 
-/* === Подвал сайта === */
-.site-footer {
-  margin-top: 60px;
-  padding: 40px 20px 30px;
-  background: #f0e8d5;
-  color: #9D3521;
-  font-family: 'Playfair Display', serif;
-  text-align: center;
-  border-top: 1px solid #d4c8b5;
-}
-
-.footer-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.footer-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.footer-logo-img {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid #9D3521;
-}
-
-.footer-logo h3 {
-  font-size: 1.4em;
-  font-weight: 600;
-  margin: 0;
-  letter-spacing: 1px;
-  color: #9D3521;
-}
-
-.footer-description {
-  font-size: 0.95em;
-  font-style: italic;
-  margin: 0 0 16px;
-  color: #7a2c1b;
-  line-height: 1.6;
-}
-
-.footer-copyright {
-  font-size: 0.85em;
-  color: #999;
-  margin: 0;
-  font-family: 'Open Sans', sans-serif;
-}
-
-/* === Белый текст для заголовка на главной === */
+/* === Белый заголовок на главной === */
 .content h2 {
   color: #FFFFFF !important;
 }
 
-
-
-/* === Навигация статей: полупрозрачный пергамент и кнопки === */
+/* === Навигация статей (если пригодится на index) === */
 .articles-nav {
-  /* полупрозрачный тёплый пергамент поверх фона body */
   background: rgba(245, 232, 200, 0.85);
   border: 1px solid rgba(212, 185, 138, 0.6);
   border-radius: 12px;
@@ -511,7 +448,6 @@ html, body, :focus {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  /* полупрозрачная «бумага» под кнопкой */
   background: rgba(255, 255, 255, 0.75);
   color: #4A3823;
   padding: 12px 16px;
@@ -576,6 +512,83 @@ html, body, :focus {
   }
 }
 
+/* === ПОДВАЛ — только справа, под контентом → grid-area: footer ===
+   ВАЖНО: без max-width и без margin — иначе сожмётся в ячейке. */
+.footer-bar {
+  grid-area: footer;
+  padding: 20px 26px;
 
+  background: #79ADA0 url('https://lh3.googleusercontent.com/pw/AP1GczNmmWGw_g2AbjjM92Dn2uM6D3vmRZH5MBxWQ6zxI2J7DPpVKG2W_-oQ8jh8NJR3ri8XCZvBqCU8WgpQny4YboE0DBf3IMMXcBVNAd1fiDa8I-dYa-wMcaB9SVCHGF5Zt-0r3S6yo31RbsMPOcqHpi8k=w1396-h875-s-no-gm?authuser=0')
+    center/cover fixed no-repeat;
 
+  border-radius: 8px;                     /* ← было 12px */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); /* ← было 0 2px 15px 0.1 */
 
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .footer-bar {
+    padding: 16px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-bar {
+    padding: 18px 16px;
+  }
+}
+
+/* === ГЛАВНАЯ: всё в один экран (только desktop) === */
+@media (min-width: 769px) and (min-height: 500px) {
+  body {
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .layout {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    grid-template-rows: 1fr auto;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .content h2 {
+    flex-shrink: 0;
+    margin-bottom: 12px;
+  }
+
+  .container {
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+}

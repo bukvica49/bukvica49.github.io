@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Славянский Постер — праздники Сварожьего Круга</title>
+<meta name="description" content="Автоматические поздравления в VK по Славянскому Кругу.">
+<style>
+  :root{
+    --teal:#79ADA0; --teal-dark:#5a8a7f;
+    --cream:#f5f0e5; --text:#2a2620; --muted:#6b665c;
+    --card:#fff; --border:#e0d8c8;
+    --shadow:0 4px 20px rgba(60,50,30,.08); --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font:17px/1.65 Georgia,'Noto Serif','Times New Roman',serif;
+    color:var(--text);background:var(--cream);min-height:100vh;
+    background-image:
+      radial-gradient(circle at 20% 10%,rgba(121,173,160,.08) 0%,transparent 40%),
+      radial-gradient(circle at 80% 90%,rgba(121,173,160,.06) 0%,transparent 40%);
+  }
+  a{color:var(--teal-dark);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  .site-header{
+    padding:24px 0;border-bottom:1px solid var(--border);
+    background:rgba(245,240,229,.7);backdrop-filter:blur(8px);
+    position:sticky;top:0;z-index:10;
+  }
+  .site-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .brand{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:bold;color:var(--text)}
+  .brand-mark{
+    width:40px;height:40px;border-radius:50%;
+    background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+    display:grid;place-items:center;color:#fff;font-size:20px;
+    box-shadow:0 2px 12px rgba(121,173,160,.4);
+  }
+  .site-nav{display:flex;gap:20px;font-size:15px}
+  .site-nav a{color:var(--muted)}
+  .site-nav a:hover{color:var(--teal-dark);text-decoration:none}
+  .hero{padding:80px 0 60px;text-align:center}
+  .hero h1{font-size:clamp(32px,5vw,52px);line-height:1.15;margin:0 0 20px;letter-spacing:-.5px}
+  .hero p{font-size:clamp(17px,2vw,20px);color:var(--muted);max-width:600px;margin:0 auto 40px}
+  .hero .badge{
+    display:inline-block;padding:6px 14px;background:rgba(121,173,160,.12);
+    color:var(--teal-dark);border-radius:100px;font-size:13px;
+    letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px;
+    font-family:-apple-system,sans-serif;
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;padding:14px 28px;
+    background:var(--teal);color:#fff;border-radius:100px;
+    font-family:-apple-system,sans-serif;font-size:16px;font-weight:600;
+    transition:.2s;box-shadow:0 4px 16px rgba(121,173,160,.35);
+  }
+  .btn:hover{background:var(--teal-dark);text-decoration:none;transform:translateY(-1px);box-shadow:0 6px 20px rgba(121,173,160,.5)}
+  .section{padding:60px 0}
+  .section h2{font-size:clamp(24px,3.5vw,34px);margin:0 0 12px;letter-spacing:-.3px}
+  .section .lead{color:var(--muted);margin:0 0 40px;max-width:640px;font-size:17px}
+  .holidays-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+  .holiday-card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:24px;box-shadow:var(--shadow);transition:.2s;
+    display:flex;flex-direction:column;
+  }
+  .holiday-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(60,50,30,.12)}
+  .holiday-card .date{
+    display:inline-flex;align-items:center;gap:8px;font-size:13px;
+    text-transform:uppercase;letter-spacing:1px;color:var(--teal-dark);
+    font-family:-apple-system,sans-serif;font-weight:600;margin-bottom:12px;
+  }
+  .holiday-card .slavic-date{
+    margin-top:auto;padding-top:16px;border-top:1px dashed var(--border);
+    font-size:13px;color:var(--muted);font-style:italic;
+  }
+  .holiday-card .text{font-size:16px;line-height:1.6;margin:0}
+  .holiday-card .image{width:100%;height:160px;object-fit:cover;border-radius:10px;margin:12px 0}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+  .step{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;box-shadow:var(--shadow)}
+  .step .num{
+    display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;
+    background:rgba(121,173,160,.15);color:var(--teal-dark);font-weight:bold;
+    font-family:-apple-system,sans-serif;margin-bottom:16px;
+  }
+  .step h3{margin:0 0 8px;font-size:18px}
+  .step p{margin:0;color:var(--muted);font-size:15px}
+  .cta{
+    background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+    color:#fff;border-radius:20px;padding:60px 40px;text-align:center;margin:40px 0;
+  }
+  .cta h2{color:#fff;margin-bottom:12px}
+  .cta p{color:rgba(255,255,255,.85);margin:0 0 32px;font-size:17px}
+  .cta .btn{background:#fff;color:var(--teal-dark)}
+  .cta .btn:hover{background:var(--cream)}
+  .empty-state{text-align:center;color:var(--muted);padding:40px;font-style:italic}
+  .site-footer{
+    padding:40px 0;border-top:1px solid var(--border);text-align:center;
+    color:var(--muted);font-size:14px;margin-top:60px;
+  }
+  .site-footer .slavic-seal{
+    display:inline-block;width:50px;height:50px;border-radius:50%;
+    background:rgba(121,173,160,.12);margin-bottom:12px;line-height:50px;font-size:24px;
+  }
+  @media(max-width:600px){
+    .site-nav{display:none}
+    .hero{padding:50px 0 40px}
+    .section{padding:40px 0}
+    .cta{padding:40px 24px;border-radius:16px}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="/" class="brand">
+      <span class="brand-mark">☀</span>
+      <span>Славянский Постер</span>
+    </a>
+    <nav class="site-nav">
+      <a href="/">← На главную</a>
+      <a href="https://vk.com/bukvica49" target="_blank" rel="noopener">VK</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="badge">Сварожий Круг</div>
+      <h1>Праздники,<br>которые приходят сами</h1>
+      <p>Каждый день в 18:00 бот смотрит на Славянский календарь и, если сегодня праздник — публикует поздравление в VK.</p>
+      <a href="#holidays" class="btn">Ближайшие праздники →</a>
+    </div>
+  </section>
+
+  <section class="section" id="holidays">
+    <div class="wrap">
+      <h2>Ближайшие праздники</h2>
+      <p class="lead">Автоматически подтягиваются из календаря. Обновляются без передеплоя.</p>
+      <div class="holidays-grid" id="holidays-grid">
+        <div class="empty-state">Загрузка праздников…</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Как это работает</h2>
+      <p class="lead">Три шага — и поздравление в ленте.</p>
+      <div class="steps">
+        <div class="step"><span class="num">1</span><h3>Календарь</h3><p>Cron проверяет Славянский Круг каждый день в 18:00 по Москве.</p></div>
+        <div class="step"><span class="num">2</span><h3>Если праздник</h3><p>Для сегодняшней даты подбирается текст и изображение из holidays.json.</p></div>
+        <div class="step"><span class="num">3</span><h3>Пост в VK</h3><p>Готовый пост уходит в группу. Вручную — не нужно, всё автоматически.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="cta">
+        <h2>Подпишись на группу</h2>
+        <p>Праздники Сварожьего Круга — в твоей ленте.</p>
+        <a href="https://vk.com/bukvica49" class="btn" target="_blank" rel="noopener">Открыть в VK →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="slavic-seal">☀</div>
+    <p>Славянский Постер · автоматические поздравления</p>
+    <p><a href="/">На главную</a> · <a href="https://github.com/bukvica49/vk-poster" target="_blank" rel="noopener">Исходники</a></p>
+  </div>
+</footer>
+
+<script>
+  const MONTHS_NUM = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  async function loadHolidays(){
+    const grid = document.getElementById('holidays-grid');
+    try{
+      const res = await fetch('https://raw.githubusercontent.com/bukvica49/vk-poster/main/holidays.json?' + Date.now());
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const items = data.holidays || data;
+      if(!Array.isArray(items) || !items.length) throw new Error('Пусто в holidays.json');
+      const dayMap = {};
+      items.forEach(h => { if(h.date) dayMap[h.date] = h; });
+      const today = new Date(); today.setHours(0,0,0,0);
+      const upcoming = [];
+      for(let i=0; i<365 && upcoming.length<7; i++){
+        const d = new Date(today); d.setDate(d.getDate()+i);
+        const key = String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+        if(dayMap[key]) upcoming.push({ ...dayMap[key], _realDate:d, _isToday:i===0 });
+      }
+      if(!upcoming.length){ grid.innerHTML = '<div class="empty-state">В ближайший год праздников не найдено</div>'; return; }
+      grid.innerHTML = upcoming.map(h => {
+        const d = h._realDate;
+        const dateStr = d.getDate() + ' ' + MONTHS_NUM[d.getMonth()];
+        const slavicText = h.slavic ? `Славянская дата: ${h.slavic.day} ${h.slavic.month}` : '';
+        const image = h.image ? `<img class="image" src="https://raw.githubusercontent.com/bukvica49/vk-poster/main/${h.image}" alt="" loading="lazy" onerror="this.style.display='none'">` : '';
+        return `<article class="holiday-card"><div class="date">${h._isToday?'🌞 Сегодня · ':''}${dateStr}</div>${image}<p class="text">${esc(h.text||'')}</p>${slavicText?`<div class="slavic-date">${esc(slavicText)}</div>`:''}</article>`;
+      }).join('');
+    }catch(err){
+      grid.innerHTML = '<div class="empty-state">Не удалось загрузить праздники: ' + esc(err.message) + '</div>';
+    }
+  }
+  function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  loadHolidays();
+</script>
+
+</body>
+</html>

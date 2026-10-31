@@ -808,3 +808,19 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 .layout, .footer-bar { min-width: 0; max-width: 100%; }
 .sidebar-left, .content { min-width: 0; overflow-x: hidden; }
 img, video, iframe { max-width: 100%; }
+
+/* ═══ fix-pass-2: .layout должен сжиматься (Chrome/Safari/Edge) ═══ */
+.layout {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  min-width: 0;
+  max-width: 100%;
+}
+.content, .sidebar-left {
+  min-width: 0;
+  max-width: 100%;
+}
+.sidebar-left img,
+.sidebar-left svg,
+.sidebar-left a {
+  max-width: 100%;
+}

@@ -749,3 +749,56 @@ body {
     background: transparent;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   FIX: горизонтальная прокрутка на /nav/contacts.html
+   ═══════════════════════════════════════════════════════════ */
+
+/* 1) Запретить горизонтальный скролл внутри .content */
+.content {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* 2) Сетка карточек: разрешить сжатие колонок */
+.contact-section {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.contact-info-card,
+.contact-form-card {
+  min-width: 0;
+}
+
+/* 3) Поля форм не распирают карточку */
+.contact-form-card input,
+.contact-form-card textarea,
+.contact-form-card select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.contact-form-card .submit-btn {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* 4) Длинные URL/слова не распирают строку контакта */
+.contact-item {
+  min-width: 0;
+}
+
+.contact-item span,
+.contact-item a {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* 5) Раньше складываем карточки в столбик — иначе на 768–900px тесно */
+@media (max-width: 900px) {
+  .contact-section {
+    grid-template-columns: 1fr;
+  }
+}

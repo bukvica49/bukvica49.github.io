@@ -824,14 +824,3 @@ img, video, iframe { max-width: 100%; }
 .sidebar-left a {
   max-width: 100%;
 }
-
-/* ═══ fix-pass-2: .layout должен сжиматься (Chrome/Safari) ═══ */
-.layout {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
-  min-width: 0;
-  max-width: 100%;
-}
-.content, .sidebar-left {
-  min-width: 0;
-  max-width: 100%;
-}

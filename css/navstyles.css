@@ -733,3 +733,19 @@ body {
   display: block; margin-top: 3px;
   font-size: 11px; opacity: 0.85;
 }
+
+/* Убрать зазоры между секциями — везде (как на главной) */
+.layout { gap: 0; }
+
+/* Мобилка: один непрерывный фон на .layout (фикс "разрыва" fixed) */
+@media (max-width: 768px) {
+  .layout {
+    background: #79ADA0 url('https://lh3.googleusercontent.com/pw/AP1GczNmmWGw_g2AbjjM92Dn2uM6D3vmRZH5MBxWQ6zxI2J7DPpVKG2W_-oQ8jh8NJR3ri8XCZvBqCU8WgpQny4YboE0DBf3IMMXcBVNAd1fiDa8I-dYa-wMcaB9SVCHGF5Zt-0r3S6yo31RbsMPOcqHpi8k=w1396-h875-s-no-gm?authuser=0')
+      center top / cover no-repeat;
+  }
+  .sidebar-left,
+  .content,
+  .footer-bar {
+    background: transparent;
+  }
+}

@@ -669,3 +669,7 @@ html, body, :focus {
   .footer-slavic { font-size: 11px; }
   .footer-slavic .hs-label { font-size: 9px; }
 }
+.footer-slavic .chertog-line {
+  display: block; margin-top: 3px;
+  font-size: 11px; opacity: 0.85;
+}

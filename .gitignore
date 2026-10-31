@@ -2,3 +2,4 @@ add_metrika.sh
 add_metrika_safe.sh
 update_metrika_id.sh
 *.tmp
+js/script.js.bak

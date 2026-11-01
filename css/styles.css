@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&display=swap');
+
 /* ═══════════════════════════════════════════════════════
    БУКВИЦА — styles.css
    Чистая версия: без устаревших стилей, без «Наверх».
@@ -691,3 +693,24 @@ html, body, :focus {
     background: transparent;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Old Standard TT — глобальный шрифт сайта, ЖИРНЫЙ (weight 700)
+   ═══════════════════════════════════════════════════════════ */
+body {
+  font-family: 'Old Standard TT', 'PT Serif', Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+}
+input, textarea, select, button {
+  font-family: inherit;
+  font-weight: 700;
+}
+/* перебиваем local font-weight 300 / 500 / 600 → 700 */
+.sidebar-left,
+.sidebar-btn,
+.nav-title,
+.article-link,
+.form-group label {
+  font-weight: 700;
+}
+/* .footer-bar — Playfair Display, свой weight 300, не трогаем */

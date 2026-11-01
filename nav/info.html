@@ -4,10 +4,137 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Древнесловенская буквица</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&family=Old+Standard+TT:wght@400;700&family=Forum&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="icon" href="../az.png" type="image/png" />
-  <link rel="stylesheet" href="../css/navstyles.css" />
+  <link rel="stylesheet" href="../css/navstyles.css?v=1" />
+  <style>
+    /* ═══ О нас: компактный текст, стандартная рамка сайта как у других страниц ═══
+       Фон/radius/shadow НЕ переопределяем — они уже в navstyles.css для .about-text:
+         background: rgba(255, 255, 255, 0.7);
+         border-radius: 10px;
+         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+
+    .about-text {
+      /* ─── рамка «средняя»: как .contact-info-card, без пергамента ─── */
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 960px;          /* как в оригинале navstyles.css */
+      min-width: 0;
+      margin: 0 auto;
+      padding: 26px 30px 24px;
+
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+
+      /* ─── типографика ─── */
+      font-family: 'Old Standard TT', 'PT Serif', Georgia, serif;
+      font-size: 1.1rem;
+      line-height: 1.62;
+      color: #333;
+      text-align: justify;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    .about-text > p {
+      margin: 0 0 8px;
+      text-indent: 1.6em;
+    }
+    .about-text > p:first-of-type {
+      text-indent: 0;
+    }
+
+    /* Drop cap «Н» — большая киноварная буквица */
+    .about-text > p:first-of-type::first-letter {
+      float: left;
+      font-family: 'Old Standard TT', Georgia, serif;
+      font-size: 2.9em;
+      line-height: 0.85;
+      padding: 4px 8px 0 0;
+      color: #8b1a1a;
+      font-weight: 700;
+      text-shadow: 1px 1px 0 #d4826a;
+    }
+
+    /* Малые буквицы */
+    .about-text > p + p::first-letter {
+      font-size: 1.2em;
+      color: #8b1a1a;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* Рубрика «Полезные ресурсы:» */
+    .about-text > p:last-of-type {
+      text-align: center;
+      text-indent: 0;
+      margin: 12px 0 8px;
+      letter-spacing: 2px;
+      color: #6b3e1e;
+      font-style: italic;
+    }
+    .about-text > p:last-of-type::first-letter {
+      font-size: inherit;
+      color: inherit;
+      font-weight: inherit;
+    }
+
+    /* Ссылки — цвет #9D3521 как в navstyles.css */
+    .about-text ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .about-text ul li {
+      display: inline-block;
+      margin: 0 10px 6px;
+      text-indent: 0;
+    }
+    .about-text ul li::before {
+      content: '❧';
+      color: #9D3521;
+      margin-right: 5px;
+      font-size: 0.95em;
+    }
+    .about-text ul a {
+      color: #9D3521;
+      text-decoration: none;
+      border-bottom: 1px dotted rgba(157, 53, 33, 0.4);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .about-text ul a:hover {
+      color: #7a2c1b;
+      border-bottom-color: #7a2c1b;
+    }
+
+    @media (max-width: 640px) {
+      .about-text {
+        padding: 16px 16px 14px;
+        text-align: left;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+      .about-text > p {
+        text-indent: 1.2em;
+      }
+      .about-text > p:first-of-type::first-letter {
+        font-size: 2.4em;
+      }
+      .about-text ul li {
+        display: block;
+        margin: 0 0 6px;
+        text-align: left;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="layout">

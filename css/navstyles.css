@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&display=swap');
+
 /* ═══════════════════════════════════════════════════════
    БУКВИЦА — navstyles.css
    Стили страниц навигации (Статьи, О нас, Контакты).
@@ -808,3 +810,48 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 .layout, .footer-bar { min-width: 0; max-width: 100%; }
 .sidebar-left, .content { min-width: 0; overflow-x: hidden; }
 img, video, iframe { max-width: 100%; }
+
+/* ═══════════════════════════════════════════════════════════
+   Old Standard TT — глобальный шрифт сайта, ЖИРНЫЙ (weight 700)
+   ═══════════════════════════════════════════════════════════ */
+body {
+  font-family: 'Old Standard TT', 'PT Serif', Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+}
+input, textarea, select, button {
+  font-family: inherit;
+  font-weight: 700;
+}
+/* перебиваем local font-weight 300 / 500 / 600 → 700 */
+.sidebar-left,
+.sidebar-btn,
+.nav-title,
+.article-link,
+.form-group label {
+  font-weight: 700;
+}
+/* .footer-bar — Playfair Display, свой weight 300, не трогаем */
+
+/* ═══ ЕДИНЫЕ РАМКИ (info / posts / contacts) ═══ */
+/* Одинаковый отступ h2 → карточка на всех 3 страницах */
+.content > h2 {
+  margin-bottom: 20px !important;
+}
+
+/* Одинаковая ширина и центрирование карточных блоков */
+.articles-nav,
+.contact-section {
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+}
+
+/* Мобилка: используем всю ширину контента */
+@media (max-width: 768px) {
+  .articles-nav,
+  .contact-section {
+    max-width: 100%;
+  }
+}
+

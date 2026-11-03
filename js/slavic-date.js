@@ -1,8 +1,11 @@
 /* ═══ Славянская дата по Круголету Числобога ═══
-   Порт 1-в-1 из ~/vk-poster/slavic_calendar.py + slavic_auto.py + chertogs.json
-   Якорь: 20.09.2026 = 1 Рамхатъ 7535, ОСЬМИЦА */
+   ⚠️  СГЕНЕРИРОВАННЫЙ ФАЙЛ — НЕ ПРАВИТЬ ВРУЧНУЮ
+   Источник: ~/vk-poster/chertogs.json + slavic_auto.CHERTOG_STARTS
+   Пересобрать: cd ~/vk-poster && python3 tools/build_site_slavic_js.py */
 (function () {
   'use strict';
+
+  const SHOW_SMZH = true;  /* «от С.М.З.Х.» в шапке — как в VK-посте */
 
   const SLAVIC_DAYS = ['ПОНЕДѢЛЬНИКЪ','ВТОРНИКЪ','ТРИТЕЙНИКЪ','ЧЕТВЕРИКЪ','ПѦТНИЦА',
                        'ШЕСТИЦА','СЕДМИЦА','ОСЬМИЦА','НЕДѢЛѦ'];
@@ -18,29 +21,28 @@
   const ANCHOR_DAY   = 1;
   const ANCHOR_WIDX  = 7;
 
-  /* ── Чертоги — 1-в-1 из ~/vk-poster/chertogs.json ── */
+  /* ── Чертоги (из chertogs.json) ── */
   const CHERTOGS = {
-    1:  { name: 'Вепрь',           patron: 'Рамхат',           tree: 'Груша' },
-    2:  { name: 'Щука',            patron: 'Рожана',           tree: 'Слива' },
-    3:  { name: 'Лебедь',          patron: 'Макошь',           tree: 'Сосна' },
-    4:  { name: 'Змей',            patron: 'Семаргл',          tree: 'Липа' },
-    5:  { name: 'Ворон',           patron: 'Коляда, Варуна',   tree: 'Лиственница' },
-    6:  { name: 'Медведь',         patron: 'Сварог',           tree: 'Малина' },
-    7:  { name: 'Бусл (аист)',     patron: 'Род',              tree: 'Ива' },
-    8:  { name: 'Волк (Белый Пёс)', patron: 'Велес',           tree: 'Тополь' },
-    9:  { name: 'Лиса',            patron: 'Марена',           tree: 'Смородина, граб' },
-    10: { name: 'Тур',             patron: 'Крышень',          tree: 'Осина' },
-    11: { name: 'Лось',            patron: 'Лада',             tree: 'Берёза' },
-    12: { name: 'Финист',          patron: 'Вышень',           tree: 'Вишня' },
-    13: { name: 'Конь',            patron: 'Купала',           tree: 'Папоротник' },
-    14: { name: 'Орёл',            patron: 'Перун',            tree: 'Дуб' },
-    15: { name: 'Раса (Леопард)',  patron: 'Даждьбог (Тарх)',  tree: 'Ясень' },
-    16: { name: 'Дева',            patron: 'Джива',            tree: 'Яблоня' }
+    1: { name: 'Вепрь', name_gen: 'Вепря', patron: 'Рамхат', tree: 'Груша', pol: 'м' },
+    2: { name: 'Щука', name_gen: 'Щуки', patron: 'Рожана', tree: 'Слива', pol: 'ж' },
+    3: { name: 'Лебедь', name_gen: 'Лебедя', patron: 'Макошь', tree: 'Сосна', pol: 'ж' },
+    4: { name: 'Змей', name_gen: 'Змея', patron: 'Семаргл', tree: 'Липа', pol: 'м' },
+    5: { name: 'Ворон', name_gen: 'Ворона', patron: 'Коляда, Варуна', tree: 'Лиственница', pol: 'м' },
+    6: { name: 'Медведь', name_gen: 'Медведя', patron: 'Сварог', tree: 'Малина', pol: 'м' },
+    7: { name: 'Бусл (аист)', name_gen: 'Бусла (аиста)', patron: 'Род', tree: 'Ива', pol: 'м' },
+    8: { name: 'Волк (Белый Пёс)', name_gen: 'Волка (Белого Пса)', patron: 'Велес', tree: 'Тополь', pol: 'м' },
+    9: { name: 'Лиса', name_gen: 'Лисы', patron: 'Марена', tree: 'Смородина, граб', pol: 'ж' },
+    10: { name: 'Тур', name_gen: 'Тура', patron: 'Крышень', tree: 'Осина', pol: 'м' },
+    11: { name: 'Лось', name_gen: 'Лося', patron: 'Лада', tree: 'Берёза', pol: 'ж' },
+    12: { name: 'Финист', name_gen: 'Финиста', patron: 'Вышень', tree: 'Вишня', pol: 'м' },
+    13: { name: 'Конь', name_gen: 'Коня', patron: 'Купала', tree: 'Папоротник', pol: 'м' },
+    14: { name: 'Орёл', name_gen: 'Орла', patron: 'Перун', tree: 'Дуб', pol: 'м' },
+    15: { name: 'Раса (Леопард)', name_gen: 'Расы (Леопарда)', patron: 'Даждьбог (Тарх)', tree: 'Ясень', pol: 'м' },
+    16: { name: 'Дева', name_gen: 'Девы', patron: 'Джива', tree: 'Яблоня', pol: 'ж' }
   };
 
-  /* ── Границы чертогов — 1-в-1 из ~/vk-poster/slavic_auto.py ── */
-  const CHERTOG_STARTS = [1, 23, 45, 66, 88, 110, 134, 159, 184,
-                          207, 229, 252, 274, 297, 319, 343];
+  /* ── Границы (из slavic_auto.CHERTOG_STARTS) ── */
+  const CHERTOG_STARTS = [1, 24, 46, 67, 89, 111, 135, 160, 185, 208, 230, 253, 275, 298, 320, 344];
 
   function isSacred(leto) { return leto % 16 === 0; }
   function monthLens(leto) { return isSacred(leto) ? MONTH_LENS_SACRED : MONTH_LENS_SIMPLE; }
@@ -102,14 +104,17 @@
 
   function header(dt) {
     const { leto, mi, d, wi } = calcSlavic(dt);
-    return SLAVIC_DAYS[wi] + ' · ' + d + ' ' + SLAVIC_MONTHS[mi] + ' · Лѣто ' + leto;
+    const tail = SHOW_SMZH ? ' от С.М.З.Х.' : '';
+    return SLAVIC_DAYS[wi] + ' · ' + d + ' ' + SLAVIC_MONTHS[mi] + ' · Лѣто ' + leto + tail;
   }
 
   function chertogLine(dt) {
     const { leto, mi, d } = calcSlavic(dt);
     const n = chertogNumber(leto, mi, d);
-    const ch = CHERTOGS[n] || { name: '?', patron: '?', tree: '?' };
-    return 'Чертог ' + ch.name + ' · ' + ch.patron + ' · ' + ch.tree;
+    const ch = CHERTOGS[n] || { name_gen: '?', patron: '?', tree: '?', pol: '' };
+    const polText = ch.pol === 'ж' ? 'Богиня-Покровительница' : 'Бог-Покровитель';
+    return '⚡ Чертог ' + ch.name_gen + ' – ' + polText + ' ' + ch.patron + ' ⚡' +
+           '<br>🌳 Священное Древо: ' + ch.tree + '.';
   }
 
   function update() {

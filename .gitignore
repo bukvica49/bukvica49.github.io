@@ -1,5 +1,10 @@
+# Одноразовые локальные скрипты — не в репо
 add_metrika.sh
 add_metrika_safe.sh
 update_metrika_id.sh
+
+# Бэкапы (*.bak, *.bak-xxx, *.bak.1234) — не в репо и НЕ на Pages
+*.bak*
+
+# Временные
 *.tmp
-js/script.js.bak

@@ -63,7 +63,7 @@
   };
 
   /* ── Границы (из slavic_auto.CHERTOG_STARTS) ── */
-  const CHERTOG_STARTS = [1, 24, 46, 67, 89, 111, 135, 160, 185, 208, 230, 253, 275, 298, 320, 344];
+  const CHERTOG_STARTS = [1, 23, 45, 66, 88, 110, 134, 159, 184, 207, 229, 252, 274, 297, 319, 343];
 
   function isSacred(leto) { return leto % 16 === 0; }
   function monthLens(leto) { return isSacred(leto) ? MONTH_LENS_SACRED : MONTH_LENS_SIMPLE; }

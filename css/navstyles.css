@@ -898,3 +898,42 @@ input, textarea, select, button {
     margin-right: 10px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   НОУТБУК (1025+ ширины, 600–820 высоты):
+   компактные контакты — чтобы 100vh-фикс не заставлял скроллить
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 1025px) and (min-height: 600px) and (max-height: 820px) {
+  body     { padding: 10px; }
+  .content { padding: 12px; }
+  .content > h2 { margin-bottom: 8px !important; font-size: 1.25rem; }
+
+  .contact-section              { gap: 12px; }
+  .contact-info-card,
+  .contact-form-card            { padding: 12px 14px; }
+
+  .contact-info-card h2,
+  .contact-form-card h2         { font-size: 1.1rem; margin-bottom: 8px; }
+
+  .contact-details              { gap: 6px; }
+  .contact-item                 { padding: 2px 0; font-size: 0.9em; }
+  .contact-item i               { width: 16px; }
+  .contact-details br           { display: none; }
+
+  .logo-container               { margin: 6px 0 0; }
+  .logo                         { max-height: 40px; }
+
+  .form-group                   { margin-bottom: 6px; }
+  .form-group label             { margin-bottom: 3px; font-size: 0.85em; }
+  .form-group input,
+  .form-group select            { padding: 5px 8px; font-size: 0.9em; }
+  .form-group textarea {
+    padding: 5px 8px;
+    font-size: 0.9em;
+    height: 62px;
+    min-height: 62px;
+    resize: vertical;
+  }
+  .submit-btn                   { padding: 7px 12px; font-size: 0.9em; }
+  .form-note                    { margin-top: 4px; font-size: 0.72em; }
+}

@@ -171,7 +171,7 @@ body {
 }
 
 /* ═══ ПОЛНОЭКРАННЫЙ МАКЕТ (только desktop ≥ 769px и высота ≥ 500px) ═══ */
-@media (min-width: 769px) and (min-height: 500px) {
+@media (min-width: 1025px) and (min-height: 600px) {
   body {
     height: 100vh;
     height: 100dvh;
@@ -855,3 +855,46 @@ input, textarea, select, button {
   }
 }
 
+
+/* ═══════════════════════════════════════════════════════════
+   ПЛАНШЕТ (769–1024): обычный поток, компактнее, без 100vh
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 769px) and (max-width: 1024px) {
+  body        { padding: 12px; }
+  .layout     { grid-template-columns: 220px 1fr; }
+  .content    { padding: 16px; }
+  .content > h2 { margin-bottom: 12px !important; font-size: 1.35rem; }
+  .contact-section          { gap: 16px; }
+  .contact-info-card,
+  .contact-form-card        { padding: 18px; }
+  .contact-item             { padding: 6px 0; }
+  .form-group               { margin-bottom: 14px; }
+  .logo                     { max-height: 60px; }
+  .logo-container           { margin-bottom: 15px; }
+  .about-text                             { padding: 20px 22px; font-size: 15px; }
+  .about-text > p                         { margin-bottom: 6px; }
+  .about-text > p:first-of-type::first-letter { font-size: 2.6em; padding: 3px 6px 0 0; }
+  .articles-nav  { padding: 16px; }
+  .nav-title     { font-size: 1.15rem; margin-bottom: 12px; }
+  .article-link  { padding: 10px 14px; font-size: 0.95rem; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   POSTS: 2-колоночная сетка ссылок на ≥481px
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 481px) {
+  .articles-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .article-link {
+    align-items: flex-start;
+    text-align: left;
+    word-break: break-word;
+  }
+  .link-icon {
+    flex: 0 0 auto;
+    margin-right: 10px;
+  }
+}

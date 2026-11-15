@@ -221,35 +221,41 @@
   }
 
   window.toggleExpandFromArticle = function () {
-    if (_inIframe()) {
-      // модалка → обычная вкладка
-      window.open(window.location.href, '_blank'); // БЕЗ noopener — иначе у вкладки не будет opener и «Свернуть» не сможет закрыть её
-    } else if (window.opener && !window.opener.closed) {
-      // патч 6: вкладку открыли «Развернуть» из модалки → просто закрываем себя:
-      // родительская вкладка остаётся на posts.html с открытой модалкой на этой же статье
-      window.close();
-      // если браузер не дал закрыть (редкий случай) — fallback
-      try { sessionStorage.setItem('vp-modal-reopen', JSON.stringify({ url: window.location.href, ts: Date.now() })); } catch (e) {}
-      window.location.href = POSTS_PAGE_URL;
-    } else {
-      // Патч 22: статья открыта напрямую («сразу в развёрнутом виде») —
-      // URL-параметр вместо sessionStorage: работает всегда, не зависит от метки/квоты
+    // Патч 22c: универсальное «свернуть»
+    var _makeVpOpen = function () {
       var _rel = '';
       try {
         var _u = new URL(window.location.href);
         var _segs = _u.pathname.replace(/\/$/, '').split('/').filter(Boolean);
-        // Патч 22b: последние ДВА сегмента (posts/postN.html) — работает и на https, и на file://
-        _rel = _segs.slice(-2).join('/');
+        _rel = _segs.slice(-2).join('/'); // posts/postN.html
       } catch (e) {
-        var _segs2 = window.location.pathname.replace(/\/$/, '').split('/').filter(Boolean);
-        _rel = _segs2.slice(-2).join('/');
+        _rel = window.location.pathname.split('/').filter(Boolean).slice(-2).join('/');
       }
       try { sessionStorage.setItem('vp-modal-reopen', JSON.stringify({ url: window.location.href, ts: Date.now() })); } catch (e) {}
       window.location.href = POSTS_PAGE_URL + '?vp-open=' + encodeURIComponent(_rel);
+    };
+
+    if (_inIframe()) {
+      // модалка → обычная вкладка (без noopener — иначе opener потеряем)
+      window.open(window.location.href, '_blank');
+      return;
     }
+
+    if (window.opener && !window.opener.closed) {
+      // вкладку открыли «Развернуть» → пробуем закрыть; если браузер запретил — фолбэк
+      window.close();
+      setTimeout(function () {
+        // если вкладка ещё жива — close не сработал → возвращаемся через ?vp-open=
+        if (!window.closed) _makeVpOpen();
+      }, 300);
+      return;
+    }
+
+    // статья открыта напрямую (адресная строка, правый клик) — всегда через ?vp-open=
+    _makeVpOpen();
   };
 
-  // подпись кнопки по режиму
+// подпись кнопки по режиму
   document.addEventListener('DOMContentLoaded', function () {
     var b = document.getElementById('vp-expand-btn');
     if (!b) return;

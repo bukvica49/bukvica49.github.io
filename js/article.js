@@ -38,7 +38,12 @@
       }
     }
 
-    window.location.href = POSTS_PAGE_URL;
+    // обычная вкладка: шаг назад по истории (15.11.2026)
+    if (window.history && window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = POSTS_PAGE_URL;
+    }
   };
 })();
 

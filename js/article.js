@@ -1,7 +1,9 @@
 // js/article.js — общий скрипт для страниц статей (/posts/postN.html)
+// Патч 22d: URL списка статей — глобально (нужен и вне IIFE: toggleExpandFromArticle)
+var POSTS_PAGE_URL = '../nav/posts.html';
+
 (function () {
   // Ссылка на страницу со списком статей, относительно файла статьи
-  var POSTS_PAGE_URL = '../nav/posts.html';
 
   /**
    * Возврат из статьи:

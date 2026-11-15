@@ -41,3 +41,32 @@
     window.location.href = POSTS_PAGE_URL;
   };
 })();
+
+  // ── Переключение модалка ↔ обычная страница (15.11.2026) ──
+  function _inIframe() {
+    try { return window.self !== window.top; } catch (e) { return true; }
+  }
+
+  window.toggleExpandFromArticle = function () {
+    if (_inIframe()) {
+      // модалка → обычная вкладка
+      window.open(window.location.href, '_blank', 'noopener');
+    } else {
+      // обычная вкладка → вернуть в модалку: запоминаем статью и уводим на список
+      try { sessionStorage.setItem('vp-modal-reopen', window.location.href); } catch (e) {}
+      window.location.href = POSTS_PAGE_URL;
+    }
+  };
+
+  // подпись кнопки по режиму
+  document.addEventListener('DOMContentLoaded', function () {
+    var b = document.getElementById('vp-expand-btn');
+    if (!b) return;
+    if (_inIframe()) {
+      b.innerHTML = '<span class="icon">⤢</span> Развернуть';
+      b.setAttribute('aria-label', 'Открыть статью на всю страницу');
+    } else {
+      b.innerHTML = '<span class="icon">⤡</span> Свернуть';
+      b.setAttribute('aria-label', 'Вернуть статью в модальное окно');
+    }
+  });

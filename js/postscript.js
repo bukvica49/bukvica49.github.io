@@ -62,6 +62,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+
+  // ── Авто-открытие статьи в модалке после «Свернуть» (15.11.2026) ──
+  try {
+    var _reopen = sessionStorage.getItem('vp-modal-reopen');
+    if (_reopen) {
+      sessionStorage.removeItem('vp-modal-reopen');
+      var _link = links.find ? links.find(function (l) {
+        return l.getAttribute('href') && _reopen.endsWith(l.getAttribute('href').split('/').pop());
+      }) : null;
+      if (_link) {
+        setTimeout(function () { openModalWithLink(_link); }, 150);
+      }
+    }
+  } catch (e) { /* sessionStorage недоступен — ничего */ }
+
   closeBtn.addEventListener("click", closeModal);
 
   modal.addEventListener("click", (e) => {

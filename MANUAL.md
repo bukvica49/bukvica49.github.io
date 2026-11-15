@@ -105,3 +105,47 @@ CSS/HTML руками — `?v` не меняется, нужен только Ct
 2. Формат/логика Чертогов — сначала в `~/vk-poster/`, потом генератор.
 3. Push в `bukvica49.github.io` ≠ push в `vk-poster`. Два разных репо.
 4. `.bak` — не коммитить никогда.
+
+
+---
+
+# 🆕 Изменения 15.11.2026 — кнопки «Назад/Развернуть/Свернуть» + editor.html в корне
+
+## Кнопки статьи (js/article.js)
+
+- **← Назад** (posts/postN.html) — ВСЕГДА ведёт в список статей `nav/posts.html`;
+  в модалке — закрывает модалку. Предварительно чистит `sessionStorage['vp-modal-reopen']`.
+- **⤢ Развернуть** (в модалке) — открывает статью обычной вкладкой: `window.open(url,'_blank')`
+  **БЕЗ 'noopener'** (noopener обнуляет opener → «Свернуть» не закроет вкладку).
+- **⤡ Свернуть** (в обычной вкладке, которая была открыта «Развернуть») — `window.close()`:
+  вкладка закрывается, ты в родителе с открытой модалкой на той же статье.
+  Fallback (вкладка открыта вручную, opener нет): `sessionStorage['vp-modal-reopen'] = {url, ts}`
+  → переход на posts.html → авто-модалка ТОЛЬКО если метка свежая (< 3 сек).
+- **pages/pageN.html**: «← Назад» убрано; footer = одна кнопка «⤢ Развернуть» **по центру**
+  (`margin:0 auto`); article.js подключён в head; footer перед метрикой Яндекса.
+- Покрыты ВСЕ: posts/post1-9 (9) + pages/page1-49 (49). Точка проверки:
+  `grep -l "vp-expand-btn" posts/post*.html pages/page*.html | wc -l` → 58.
+
+## Авто-модалка (js/postscript.js на nav/posts.html)
+
+- Читает `vp-modal-reopen` (JSON {url, ts}); принимает только `Date.now()-ts < 3000`;
+  ищет ссылку среди `.article-link.modal-link` — если есть, `openModalWithLink(link)`;
+  если нет (pages) — прямой `iframe.src=url` + `modal.style.display='flex'`.
+- Урок: `window.open(...,'noopener')` наследует КОПИЮ sessionStorage в дочернюю вкладку —
+  старый флаг мог сам открывать модалку при «Назад». Решение — метка времени.
+
+## editor.html в корне сайта
+
+- Кнопка ✍ на сайте открывает `/editor.html` (относительно главной) — файл задеплоен
+  в корень **этого** репо (копия `vk-poster/web/editor.html`).
+- `app.js` (в vk-poster) открывает с cache-buster `editor.html?v=<timestamp>`.
+- ⚠️ После правок editor.html в vk-poster — **перекопировать сюда и запушить**:
+
+```bash
+cp ~/site/vk-poster/web/editor.html ~/site/bukvica49.github.io/editor.html
+git add editor.html && git commit -m "deploy editor.html" && git push
+```
+
+- Проверка деплоя: открыть https://bukvica49.github.io/editor.html — должен быть
+  редактор с вкладками «Лист 1»/«+» у «Готовый HTML:» (не «Редактор ещё не открыт»,
+  не светлый ВК-редактор без вкладок).

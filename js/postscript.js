@@ -65,23 +65,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ── Авто-открытие статьи в модалке после «Свернуть» (15.11.2026) ──
   try {
-    var _reopen = sessionStorage.getItem('vp-modal-reopen');
-    if (_reopen) {
+    var _raw = sessionStorage.getItem('vp-modal-reopen');
+    if (_raw) {
       sessionStorage.removeItem('vp-modal-reopen');
-      var _link = links.find ? links.find(function (l) {
-        return l.getAttribute('href') && _reopen.endsWith(l.getAttribute('href').split('/').pop());
-      }) : null;
-      if (_link) {
-        setTimeout(function () { openModalWithLink(_link); }, 150);
-      } else {
-        // FIX 15.11: страницы pages/pageN.html не в списке ссылок — открываем модалку напрямую
-        setTimeout(function () {
-          iframe.src = _reopen;
-          modal.style.display = 'flex';
-          document.body.style.overflow = 'hidden';
-          modal.setAttribute('aria-hidden', 'false');
-        }, 150);
+      // патч 5: метка времени — модалка открывается только если «Свернуть» было < 3 сек назад
+      var _reopen = null, _fresh = false;
+      try {
+        var _obj = JSON.parse(_raw);
+        if (_obj && _obj.url) { _reopen = _obj.url; _fresh = (Date.now() - _obj.ts) < 3000; }
+      } catch (e2) { _reopen = _raw; _fresh = true; }
+      if (_fresh && _reopen) {
+        var _link = links.find ? links.find(function (l) {
+          return l.getAttribute('href') && _reopen.endsWith(l.getAttribute('href').split('/').pop());
+        }) : null;
+        if (_link) {
+          setTimeout(function () { openModalWithLink(_link); }, 150);
+        } else {
+          // pages/pageN.html не в списке ссылок — открываем модалку напрямую
+          setTimeout(function () {
+            iframe.src = _reopen;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            modal.setAttribute('aria-hidden', 'false');
+          }, 150);
+        }
       }
+      // не свежая — просто открываем список без модалки (это «Назад»)
     }
   } catch (e) { /* sessionStorage недоступен — ничего */ }
 

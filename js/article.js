@@ -38,12 +38,9 @@
       }
     }
 
-    // обычная вкладка: шаг назад по истории (15.11.2026)
-    if (window.history && window.history.length > 1) {
-      window.history.back();
-    } else {
-      window.location.href = POSTS_PAGE_URL;
-    }
+    // обычная вкладка: всегда в список статей (15.11.2026, патч 5)
+    try { sessionStorage.removeItem('vp-modal-reopen'); } catch (e) {}
+    window.location.href = POSTS_PAGE_URL;
   };
 })();
 
@@ -57,8 +54,8 @@
       // модалка → обычная вкладка
       window.open(window.location.href, '_blank', 'noopener');
     } else {
-      // обычная вкладка → вернуть в модалку: запоминаем статью и уводим на список
-      try { sessionStorage.setItem('vp-modal-reopen', window.location.href); } catch (e) {}
+      // обычная вкладка → вернуть в модалку: URL + метка времени (патч 5)
+      try { sessionStorage.setItem('vp-modal-reopen', JSON.stringify({ url: window.location.href, ts: Date.now() })); } catch (e) {}
       window.location.href = POSTS_PAGE_URL;
     }
   };

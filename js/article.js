@@ -52,7 +52,7 @@
   window.toggleExpandFromArticle = function () {
     if (_inIframe()) {
       // модалка → обычная вкладка
-      window.open(window.location.href, '_blank', 'noopener');
+      window.open(window.location.href, '_blank'); // БЕЗ noopener — иначе у вкладки не будет opener и «Свернуть» не сможет закрыть её
     } else if (window.opener && !window.opener.closed) {
       // патч 6: вкладку открыли «Развернуть» из модалки → просто закрываем себя:
       // родительская вкладка остаётся на posts.html с открытой модалкой на этой же статье

@@ -73,6 +73,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }) : null;
       if (_link) {
         setTimeout(function () { openModalWithLink(_link); }, 150);
+      } else {
+        // FIX 15.11: страницы pages/pageN.html не в списке ссылок — открываем модалку напрямую
+        setTimeout(function () {
+          iframe.src = _reopen;
+          modal.style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+          modal.setAttribute('aria-hidden', 'false');
+        }, 150);
       }
     }
   } catch (e) { /* sessionStorage недоступен — ничего */ }

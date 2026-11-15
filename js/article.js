@@ -53,8 +53,15 @@
     if (_inIframe()) {
       // модалка → обычная вкладка
       window.open(window.location.href, '_blank', 'noopener');
+    } else if (window.opener && !window.opener.closed) {
+      // патч 6: вкладку открыли «Развернуть» из модалки → просто закрываем себя:
+      // родительская вкладка остаётся на posts.html с открытой модалкой на этой же статье
+      window.close();
+      // если браузер не дал закрыть (редкий случай) — fallback
+      try { sessionStorage.setItem('vp-modal-reopen', JSON.stringify({ url: window.location.href, ts: Date.now() })); } catch (e) {}
+      window.location.href = POSTS_PAGE_URL;
     } else {
-      // обычная вкладка → вернуть в модалку: URL + метка времени (патч 5)
+      // вкладка открыта вручную: флаг + список, модалка откроется по свежей метке
       try { sessionStorage.setItem('vp-modal-reopen', JSON.stringify({ url: window.location.href, ts: Date.now() })); } catch (e) {}
       window.location.href = POSTS_PAGE_URL;
     }

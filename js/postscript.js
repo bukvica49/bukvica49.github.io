@@ -62,61 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-
-  // ── Патч 22: приоритет ?vp-open= (статья открыта напрямую и «свёрнута») ──
-  try {
-    var _q = new URLSearchParams(window.location.search).get('vp-open');
-    if (_q) {
-      history.replaceState(null, '', window.location.pathname);
-      var _openDirect = function () {
-        var _lk = links.find ? links.find(function (l) {
-          var h2 = l.getAttribute('href') || '';
-          return _q.endsWith(h2.split('/').pop()) || h2.endsWith(_q);
-        }) : null;
-        if (_lk) setTimeout(function () { openModalWithLink(_lk); }, 150);
-        else setTimeout(function () {
-          iframe.src = _q.startsWith('posts/') || _q.startsWith('pages/') ? ('../' + _q) : _q;
-          modal.style.display = 'flex';
-          document.body.style.overflow = 'hidden';
-          modal.setAttribute('aria-hidden', 'false');
-        }, 150);
-      };
-      _openDirect();
-      window.__vpOpenDone = true;
-    }
-  } catch (e) {}
-
-  // ── Авто-открытие статьи в модалке после «Свернуть» (15.11.2026) ──
-  if (!window.__vpOpenDone) try {
-    var _raw = sessionStorage.getItem('vp-modal-reopen');
-    if (_raw) {
-      sessionStorage.removeItem('vp-modal-reopen');
-      // патч 5: метка времени — модалка открывается только если «Свернуть» было < 3 сек назад
-      var _reopen = null, _fresh = false;
-      try {
-        var _obj = JSON.parse(_raw);
-        if (_obj && _obj.url) { _reopen = _obj.url; _fresh = (Date.now() - _obj.ts) < 3000; }
-      } catch (e2) { _reopen = _raw; _fresh = true; }
-      if (_fresh && _reopen) {
-        var _link = links.find ? links.find(function (l) {
-          return l.getAttribute('href') && _reopen.endsWith(l.getAttribute('href').split('/').pop());
-        }) : null;
-        if (_link) {
-          setTimeout(function () { openModalWithLink(_link); }, 150);
-        } else {
-          // pages/pageN.html не в списке ссылок — открываем модалку напрямую
-          setTimeout(function () {
-            iframe.src = _reopen;
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            modal.setAttribute('aria-hidden', 'false');
-          }, 150);
-        }
-      }
-      // не свежая — просто открываем список без модалки (это «Назад»)
-    }
-  } catch (e) { /* sessionStorage недоступен — ничего */ }
-
   closeBtn.addEventListener("click", closeModal);
 
   modal.addEventListener("click", (e) => {

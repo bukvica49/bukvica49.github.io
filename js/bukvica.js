@@ -22,6 +22,22 @@
           var iframe = parentDoc.getElementById('modal-iframe');
           if (iframe) iframe.src = '';
           console.info('[vp] goBack: модалка закрыта напрямую');
+          // Патч 36: щит от pass-through клика — этот же клик мог провалиться под
+          // оверлей и переоткрыть модалку (стек показал openModal из tree-node)
+          try {
+            var shield = function (ev) {
+              ev.stopPropagation();
+              ev.preventDefault();
+            };
+            parentDoc.addEventListener('click', shield, true);
+            parentDoc.addEventListener('mousedown', shield, true);
+            parentDoc.addEventListener('mouseup', shield, true);
+            setTimeout(function () {
+              parentDoc.removeEventListener('click', shield, true);
+              parentDoc.removeEventListener('mousedown', shield, true);
+              parentDoc.removeEventListener('mouseup', shield, true);
+            }, 400);
+          } catch (e2) {}
           return;
         }
         var closeBtn = parentDoc.querySelector('.close');

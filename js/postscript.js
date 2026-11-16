@@ -263,7 +263,7 @@ window.addEventListener('resize', adaptArticleLinks);
   var fab = document.createElement("button");
   fab.type = "button";
   fab.id = "vp-modal-fab";
-  fab.innerHTML = '<span class="icon">⤢</span><span class="vp-fab-label">Развернуть</span>';
+  fab.innerHTML = '<span class="icon">⤢</span>'; // Патч 30: без текста
   // Патч 27: z-index инлайном — гарантия поверх затемнения модалки
   fab.style.position = 'fixed';
   fab.style.zIndex = '1002';

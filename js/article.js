@@ -303,11 +303,8 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     var _paint = function () {
       var inFrame = _inIframe();
       b.className = 'action-btn expand vp-fab';
+      // Патч 30: только стрелка, текст в тултипе title
       b.innerHTML = inFrame ? '<span class="icon">⤢</span>' : '<span class="icon">⤡</span>';
-      var lbl = document.createElement('span');
-      lbl.className = 'vp-fab-label';
-      lbl.textContent = inFrame ? 'Развернуть' : 'Свернуть';
-      b.appendChild(lbl);
       b.title = inFrame ? 'Открыть статью на всю страницу' : 'Вернуть статью в модальное окно';
       b.setAttribute('aria-label', b.title);
     };

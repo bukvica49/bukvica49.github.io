@@ -303,3 +303,28 @@ window.addEventListener('resize', adaptArticleLinks);
   var _t = setInterval(refresh, 400);
   refresh();
 })();
+
+
+// ── Патч 32: мгновенный возврат в модалку по сигналу от вкладки статьи ──
+window.addEventListener('message', function (ev) {
+  try {
+    var d = ev.data;
+    if (!d || d.type !== 'vp-open' || !d.url) return;
+    var _links = Array.prototype.slice.call(document.querySelectorAll('.article-link.modal-link'));
+    var _lk = _links.find(function (l) {
+      var h = l.getAttribute('href') || '';
+      return d.url.endsWith(h.split('/').pop());
+    });
+    var modal = document.getElementById('modal');
+    var iframe = document.getElementById('modal-iframe');
+    if (!modal || !iframe) return;
+    if (_lk) {
+      _lk.click();
+    } else {
+      iframe.src = d.url;
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      modal.setAttribute('aria-hidden', 'false');
+    }
+  } catch (e) {}
+});

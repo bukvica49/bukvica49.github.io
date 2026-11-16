@@ -244,10 +244,11 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     }
 
     if (window.opener && !window.opener.closed) {
-      // вкладку открыли «Развернуть» → пробуем закрыть; если браузер запретил — фолбэк
+      // Патч 32: сигнал родителю — список сам мгновенно откроет модалку с этой статьёй
+      try { window.opener.postMessage({ type: 'vp-open', url: window.location.href }, '*'); } catch (e) {}
       window.close();
       setTimeout(function () {
-        // если вкладка ещё жива — close не сработал → возвращаемся через ?vp-open=
+        // close мог не сработать (браузер запрещает) — тогда fallback через ?vp-open=
         if (!window.closed) _makeVpOpen();
       }, 300);
       return;

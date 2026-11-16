@@ -270,7 +270,18 @@ var POSTS_PAGE_URL = '../nav/posts.html';
       if (b) b.remove();
       return;
     }
-    if (!b) return;
+    if (!b) {
+      // Патч 29: кнопки нет — создаём закладку с нуля (pageN могут иметь другой шаблон)
+      b = document.createElement('button');
+      b.id = 'vp-expand-btn';
+      b.type = 'button';
+      b.className = 'action-btn expand';
+      b.setAttribute('onclick', 'toggleExpandFromArticle()');
+      document.body.appendChild(b);
+      console.info('[vp] fab создан с нуля на', window.location.pathname);
+    } else {
+      console.info('[vp] fab из footer-кнопки на', window.location.pathname);
+    }
 
     // режим: 'expanded' (вкладка) | 'modal' (по умолчанию)
     var getMode = function () {

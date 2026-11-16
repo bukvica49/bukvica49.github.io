@@ -203,3 +203,16 @@ window.addEventListener('message', function (ev) {
     if (fab) fab.style.display = 'none';
   } catch (e) {}
 });
+
+
+// ── Патч 35 (диагностика): кто переоткрывает модалку ──
+(function () {
+  var m = document.getElementById('modal');
+  if (!m || !window.MutationObserver) return;
+  var obs = new MutationObserver(function () {
+    if (m.style.display === 'flex') {
+      console.warn('[vp] modal переоткрыт! стек виновника:\n', new Error().stack);
+    }
+  });
+  obs.observe(m, { attributes: true, attributeFilter: ['style'] });
+})();

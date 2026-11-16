@@ -313,6 +313,9 @@ st.textContent = [
       document.head.appendChild(st);
     }
 
+    // Патч 27: z-index инлайном — закладка точно поверх контента
+    b.style.position = 'fixed';
+    b.style.zIndex = '9998';
     _paint();
   }
   if (document.readyState === 'loading') {

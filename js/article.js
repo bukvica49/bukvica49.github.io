@@ -48,6 +48,8 @@ var POSTS_PAGE_URL = '../nav/posts.html';
   // ── Патч 21: картинка увеличивается НА СВОЁМ МЕСТЕ ──
   function initInplaceZoom() {
     if (window.__vpInplaceInit) return;
+    // Патч 52: на буквицах зум отключён — верхняя картинка = кнопка «Азъ» (выход на главную)
+    if (window.location.pathname.indexOf('/pages/') !== -1) return;
     window.__vpInplaceInit = true;
 
     var layer = null;      // текущий плавающий клон

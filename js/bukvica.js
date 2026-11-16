@@ -57,6 +57,13 @@
       if (window.opener && !window.opener.closed) {
         // Патч 48: сброс убран — глобальный режим сохраняется при возврате с вкладки
         window.opener.postMessage({ type: 'vp-home' }, '*');
+        // Патч 49: закрыть вкладку сразу; если браузер не дал — чистая главная
+        setTimeout(function () {
+          try { window.close(); } catch (e3) {}
+          setTimeout(function () {
+            if (!window.closed) window.location.href = '../index.html';
+          }, 250);
+        }, 50);
         window.close();
         // если браузер запретил close — fallback: обычный переход
         setTimeout(function () {

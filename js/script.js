@@ -204,3 +204,20 @@ window.addEventListener('message', function (ev) {
   } catch (e) {}
 });
 
+// Патч 37b: хронология модалки
+(function () {
+  var modal = document.getElementById('modal');
+  if (!modal || !window.MutationObserver) return;
+  var t = function () { return (performance.now() / 1000).toFixed(3); };
+  var mo = new MutationObserver(function () {
+    var st = (new Error().stack || '').split('
+').slice(1, 4).join(' | ');
+    console.log('[vp-chrono]', t(), 'display ->', modal.style.display, st);
+  });
+  mo.observe(modal, { attributes: true, attributeFilter: ['style'] });
+  document.querySelectorAll('.tree-node a').forEach(function (a) {
+    a.addEventListener('click', function () { console.log('[vp-chrono]', t(), 'клик tree-node'); }, true);
+  });
+  var cb = document.querySelector('.close');
+  if (cb) cb.addEventListener('click', function () { console.log('[vp-chrono]', t(), 'клик .close'); }, true);
+})();

@@ -252,3 +252,53 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('resize', adaptArticleLinks);
+
+
+// ── Патч 24: плавающая кнопка «Развернуть» как часть модального окна ──
+(function () {
+  var modal = document.getElementById("modal");
+  var iframe = document.getElementById("modal-iframe");
+  if (!modal || !iframe) return;
+
+  var fab = document.createElement("button");
+  fab.type = "button";
+  fab.id = "vp-modal-fab";
+  fab.innerHTML = '<span class="icon">⤢</span><span class="vp-fab-label">Развернуть</span>';
+  fab.title = "Открыть статью на всю страницу";
+  document.body.appendChild(fab);
+
+  var st = document.createElement("style");
+  st.textContent = [
+    '#vp-modal-fab{ position:fixed; right:18px; bottom:18px; width:52px; height:52px;',
+    '  padding:0; border:1px solid rgba(0,0,0,.15); border-radius:14px; background:#fff;',
+    '  display:none; flex-direction:column; align-items:center; justify-content:center;',
+    '  z-index:10001; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,.35); }',
+    '#vp-modal-fab .icon{ font-size:22px; line-height:1; }',
+    '#vp-modal-fab .vp-fab-label{ font-size:9px; line-height:1.2; margin-top:2px; opacity:.85; }',
+    '#vp-modal-fab:hover{ transform:scale(1.06); transition:.15s; }'
+  ].join('\\n');
+  document.head.appendChild(st);
+
+  function isOpen() {
+    return modal.style.display === "flex";
+  }
+  function refresh() {
+    var open = isOpen();
+    var mode = 'modal';
+    try { mode = localStorage.getItem('vp-expand-mode') || 'modal'; } catch (e) {}
+    // показываем кнопку только когда модалка открыта и режим — модальный
+    fab.style.display = (open && mode === 'modal') ? 'flex' : 'none';
+  }
+
+  fab.addEventListener("click", function () {
+    if (!isOpen()) return;
+    var src = iframe.getAttribute("src");
+    if (!src) return;
+    try { localStorage.setItem('vp-expand-mode', 'expanded'); } catch (e) {}
+    window.open(src, "_blank"); // без noopener — вкладка сможет «Свернуться» в модалку
+  });
+
+  // следим за открытием/закрытием модалки (display меняется напрямую)
+  var _t = setInterval(refresh, 400);
+  refresh();
+})();

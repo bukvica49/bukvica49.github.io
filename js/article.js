@@ -264,9 +264,9 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     var isPost = window.location.pathname.indexOf('/posts/') !== -1;
     var b = document.getElementById('vp-expand-btn');
 
-    // pages/pageN.html — кнопки Развернуть/Свернуть не нужны: убираем
-    if (!isPost && b) { b.remove(); return; }
-    if (!b) return;
+    // Патч 24: кнопка в footer статей больше не нужна нигде —
+    // единая плавающая кнопка живёт в модальном окне (posts.html) и на вкладке.
+    if (b) { b.remove(); return; }
 
     // режим: 'expanded' (вкладка) | 'modal' (по умолчанию)
     var getMode = function () {

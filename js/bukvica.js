@@ -55,7 +55,7 @@
     // index-вкладка закроет свою модалку, эта вкладка закроется сама.
     try {
       if (window.opener && !window.opener.closed) {
-        try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e0) {} // Патч 39
+        // Патч 48: сброс убран — глобальный режим сохраняется при возврате с вкладки
         window.opener.postMessage({ type: 'vp-home' }, '*');
         window.close();
         // если браузер запретил close — fallback: обычный переход

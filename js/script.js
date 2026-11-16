@@ -42,12 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.style.overflow = "";
     modal.setAttribute("aria-hidden", "true");
     document.body.focus();
-    // Патч 47: закрыл модалку — модальный режим, сбрасываем память буквиц
-    try {
-      Object.keys(localStorage).forEach(function (k) {
-        if (k.indexOf('vp-expand-page') === 0) localStorage.removeItem(k);
-      });
-    } catch (e2) {}
+    // Патч 48: закрыл модалку — глобальный модальный режим
+    try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e2) {}
   }
 
   // --- Клик по узлу дерева → открыть буквицу ---
@@ -57,9 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const href = link.getAttribute("href");
       const match = href.match(/page(\d+)\.html$/);
       const pageNum = match ? parseInt(match[1], 10) : 1;
-      // Патч 47: буквица с сохраненным развернутым режимом — вкладкой
+      // Патч 48: глобальный режим — вкладкой, если раньше развернул любую буквицу/статью
       try {
-        if (localStorage.getItem('vp-expand-page' + pageNum) === 'expanded') {
+        if (localStorage.getItem('vp-expand-mode') === 'expanded') {
           window.open(href, '_blank');
           return;
         }
@@ -254,3 +250,4 @@ window.addEventListener('message', function (ev) {
   refresh();
 })();
 // Патч 47: память развернутых буквиц активна
+// Патч 48: глобальная память режима буквиц

@@ -142,3 +142,55 @@ document.addEventListener("DOMContentLoaded", () => {
   // Финальный пересчёт после полной загрузки страницы
   window.addEventListener("load", resizeFamilyTree);
 });
+
+
+// Патч 30: без текста
+  fab.title = "Открыть страницу на всю вкладку";
+  // Патч 27: z-index инлайном — гарантия поверх затемнения
+  fab.style.position = "fixed";
+  fab.style.zIndex = "1002";
+  document.body.appendChild(fab);
+
+  var st = document.createElement("style");
+  st.textContent = [
+    '#vp-modal-fab{ right:20px; bottom:20px; width:52px; height:52px;',
+    '  padding:0; border:none; border-radius:10px; background:rgba(0,0,0,.7); color:#fff;',
+    '  display:none; flex-direction:column; align-items:center; justify-content:center;',
+    '  cursor:pointer; transition:background .15s, transform .15s; }',
+    '#vp-modal-fab .icon{ font-size:20px; line-height:1; color:#fff; }',
+    '#vp-modal-fab:hover{ background:#ff3333; transform:scale(1.1); }',
+    '#vp-modal-fab:focus{ outline:2px solid #00aaff; outline-offset:2px; }'
+  ].join('\\n');
+  document.head.appendChild(st);
+
+  function isOpen() { return modal.style.display === "flex"; }
+  function refresh() { fab.style.display = isOpen() ? "flex" : "none"; }
+
+  fab.addEventListener("click", function () {
+    if (!isOpen()) return;
+    var src = iframe.getAttribute("src");
+    if (!src) return;
+    try { localStorage.setItem('vp-expand-mode', 'expanded'); } catch (e) {}
+    window.open(src, "_blank"); // без noopener — вкладка сможет «Свернуться» обратно в модалку
+  });
+
+  setInterval(refresh, 400);
+  refresh();
+})();
+
+
+// ── Патч 34: вкладка-буквица просит закрыть модалку на index (возврат на главную) ──
+window.addEventListener('message', function (ev) {
+  try {
+    if (!ev.data || ev.data.type !== 'vp-home') return;
+    var modal = document.getElementById('modal');
+    if (!modal) return;
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+    modal.setAttribute('aria-hidden', 'true');
+    var iframe = document.getElementById('modal-iframe');
+    if (iframe) iframe.src = '';
+    var fab = document.getElementById('vp-modal-fab');
+    if (fab) fab.style.display = 'none';
+  } catch (e) {}
+});

@@ -250,6 +250,8 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     if (window.opener && !window.opener.closed) {
       // Патч 32: сигнал родителю — список сам мгновенно откроет модалку с этой статьёй
       try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e0) {} // Патч 40
+      // Патч 41: канал через storage — работает между вкладками всегда
+      try { localStorage.setItem('vp-open-request', JSON.stringify({ url: window.location.href, ts: Date.now() })); } catch (e1) {}
       try { window.opener.postMessage({ type: 'vp-open', url: window.location.href }, '*'); } catch (e) {}
       window.close();
       setTimeout(function () {

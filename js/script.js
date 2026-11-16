@@ -260,3 +260,22 @@ window.addEventListener('message', function (ev) {
     if (fab) fab.style.display = 'flex';
   } catch (e) {}
 });
+
+// Патч 41: открыть буквицу по storage-сигналу от вкладки (всегда работает)
+window.addEventListener('storage', function (ev) {
+  try {
+    if (ev.key !== 'vp-open-request' || !ev.newValue) return;
+    var d = JSON.parse(ev.newValue);
+    var m = String(d.url || '').match(/page(\\d+)\.html$/);
+    if (!m) return;
+    var modal = document.getElementById('modal');
+    var iframe = document.getElementById('modal-iframe');
+    if (!modal || !iframe) return;
+    iframe.src = 'pages/page' + m[1] + '.html';
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    modal.setAttribute('aria-hidden', 'false');
+    var fab = document.getElementById('vp-modal-fab');
+    if (fab) fab.style.display = 'flex';
+  } catch (e) {}
+});

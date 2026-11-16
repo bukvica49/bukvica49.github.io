@@ -142,3 +142,47 @@ document.addEventListener("DOMContentLoaded", () => {
   // Финальный пересчёт после полной загрузки страницы
   window.addEventListener("load", resizeFamilyTree);
 });
+
+
+// ── Патч 31: плавающая кнопка «Развернуть» в модалке на index.html ──
+(function () {
+  var modal = document.getElementById("modal");
+  var iframe = document.getElementById("modal-iframe");
+  if (!modal || !iframe) return;
+
+  var fab = document.createElement("button");
+  fab.type = "button";
+  fab.id = "vp-modal-fab";
+  fab.innerHTML = '<span class="icon">⤢</span>'; // Патч 30: без текста
+  fab.title = "Открыть страницу на всю вкладку";
+  // Патч 27: z-index инлайном — гарантия поверх затемнения
+  fab.style.position = "fixed";
+  fab.style.zIndex = "1002";
+  document.body.appendChild(fab);
+
+  var st = document.createElement("style");
+  st.textContent = [
+    '#vp-modal-fab{ right:20px; bottom:20px; width:52px; height:52px;',
+    '  padding:0; border:none; border-radius:10px; background:rgba(0,0,0,.7); color:#fff;',
+    '  display:none; flex-direction:column; align-items:center; justify-content:center;',
+    '  cursor:pointer; transition:background .15s, transform .15s; }',
+    '#vp-modal-fab .icon{ font-size:20px; line-height:1; color:#fff; }',
+    '#vp-modal-fab:hover{ background:#ff3333; transform:scale(1.1); }',
+    '#vp-modal-fab:focus{ outline:2px solid #00aaff; outline-offset:2px; }'
+  ].join('\\n');
+  document.head.appendChild(st);
+
+  function isOpen() { return modal.style.display === "flex"; }
+  function refresh() { fab.style.display = isOpen() ? "flex" : "none"; }
+
+  fab.addEventListener("click", function () {
+    if (!isOpen()) return;
+    var src = iframe.getAttribute("src");
+    if (!src) return;
+    try { localStorage.setItem('vp-expand-mode', 'expanded'); } catch (e) {}
+    window.open(src, "_blank"); // без noopener — вкладка сможет «Свернуться» обратно в модалку
+  });
+
+  setInterval(refresh, 400);
+  refresh();
+})();

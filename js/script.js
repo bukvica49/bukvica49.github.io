@@ -242,7 +242,7 @@ window.addEventListener('message', function (ev) {
     if (!isOpen()) return;
     var src = iframe.getAttribute('src');
     if (!src) return;
-    try { localStorage.setItem('vp-expand-page' + (src.match(/page([0-9]+)\.html$/) || [,''])[1], 'expanded'); } catch (e1) {} // Патч 47
+    try { localStorage.setItem('vp-expand-mode', 'expanded'); } catch (e1) {} // Патч 48b
     window.open(src, '_blank');
   });
 

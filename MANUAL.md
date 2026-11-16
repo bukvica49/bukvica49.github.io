@@ -4,7 +4,7 @@
 Статический сайт «Родная Традиция» (HTML/CSS/JS, без сборки) на GitHub Pages.
 - URL: https://bukvica49.github.io/
 - Репо: `git@github.com:bukvica49/bukvica49.github.io.git`
-- Рабочая копия: `~/site/bukvica49.github.io-main/`
+- Рабочая копия: `~/site/bukvica49.github.io/`
 
 ## Структура
 - `index.html` — главная
@@ -16,7 +16,7 @@
 - `.github/workflows/pages.yml` — деплой
 
 ## Локальный просмотр
-    cd ~/site/bukvica49.github.io-main
+    cd ~/site/bukvica49.github.io
     python3 -m http.server 8000
 Открыть http://localhost:8000/ + Ctrl+Shift+R.
 
@@ -35,7 +35,7 @@
 >
 > При правке этих данных — **сначала править `.py`**, потом `python3 tools/build_site_slavic_js.py`.
 
-Источник — в `~/vk-poster/`:
+Источник — в `~/site/vk-poster/`:
 - `chertogs.json` — 16 Чертогов (name, name_gen, patron, tree, pol)
 - `slavic_auto.py` → `CHERTOG_STARTS` — границы по дню года
 - `slavic_calendar.py` — ядро (9-дневка, 9 месяцев, якорь 20.09.2026)
@@ -47,8 +47,8 @@
     🌳 Священное Древо: Слива.
 
 ### После правки Чертогов / границ — пересобрать
-    cd ~/vk-poster && python3 tools/build_site_slavic_js.py
-    cd ~/site/bukvica49.github.io-main
+    cd ~/site/vk-poster && python3 tools/build_site_slavic_js.py
+    cd ~/site/bukvica49.github.io
     git add js/ index.html nav/
     git commit -m "sync: славянская дата из chertogs.json"
     git push
@@ -82,10 +82,10 @@ CSS/HTML руками — `?v` не меняется, нужен только Ct
 
 ### Дата на сайте неправильная
 Сначала сверить с dry-run автопостера:
-    cd ~/vk-poster && python3 poster.py config.main.json --dry-run
+    cd ~/site/vk-poster && python3 poster.py config.main.json --dry-run
 
 - dry-run правильный → `python3 tools/build_site_slavic_js.py`
-- dry-run неправильный → `~/vk-poster/HANDOFF.md`
+- dry-run неправильный → `~/site/vk-poster/HANDOFF.md`
 
 ## Файлы
 | Файл | Роль |
@@ -97,11 +97,29 @@ CSS/HTML руками — `?v` не меняется, нужен только Ct
 | `.gitignore` | бэкапы, метрика-скрипты |
 
 ## Для AI
-Прочитай `~/site/bukvica49.github.io-main/MANUAL.md` и `~/vk-poster/HANDOFF.md`.
+Прочитай `~/site/bukvica49.github.io/MANUAL.md` и `~/site/vk-poster/HANDOFF.md`.
 Проблема: <одна строка>.
 
 Правила:
 1. `js/slavic-date.js` — НЕ ПРАВИТЬ РУКАМИ. Только `tools/build_site_slavic_js.py`.
-2. Формат/логика Чертогов — сначала в `~/vk-poster/`, потом генератор.
+2. Формат/логика Чертогов — сначала в `~/site/vk-poster/`, потом генератор.
 3. Push в `bukvica49.github.io` ≠ push в `vk-poster`. Два разных репо.
 4. `.bak` — не коммитить никогда.
+## Кнопочная система статей и буквиц (финал 16.11.2026)
+- статьи и буквицы: модалка → «⤢» → вкладка + память `vp-expand-mode`;
+  закладка «⤡» на вкладке → модалка; крестик модалки сбрасывает режим;
+  буквицы: «Азъ» — выход на главную с первого двойного клика (зум off на /pages/);
+- `js/article.js?v=52` подключён ко ВСЕМ `posts/*.html` и `pages/pageN.html`;
+- `js/postscript.js?v=3` — nav/posts.html; `js/script.js?v=15` — index.html;
+- шаблон нового поста: `posts/_template.html` (article.js?v=52, footer с кнопками);
+- отладка: статьи сразу вкладками → консоль `localStorage.removeItem('vp-expand-mode')`;
+- откаты: теги `stable-pages-52` (финал), `stable-1411` (база 14.11).
+- подробности: MANUAL_SITE_FEATURES.md и MANUAL_CODE_EDITOR.md в репо `~/site/vk-poster`.
+
+## Редактор ✍ — «📄 Сверстать HTML» (патч 54, web/app.js в vk-poster)
+- ввод в #src: строка 1 — заголовок; [img] URL Подпись; [src] URL; пустая строка = абзац;
+- #dst = готовый posts/postN.html (pages.css, article.js?v=52, footer с кнопками).
+
+## Уроки 53-серии (важно)
+- правки js/app.js — только точными якорями (count==1) + `node --check` после КАЖДОЙ правки;
+- сломанный синтаксис app.js = пропавшая панель поиска превью; эталон отката 9089aaf (vk-poster).

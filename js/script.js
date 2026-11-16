@@ -142,3 +142,110 @@ document.addEventListener("DOMContentLoaded", () => {
   // Финальный пересчёт после полной загрузки страницы
   window.addEventListener("load", resizeFamilyTree);
 });
+
+// ── Патч 51: кнопки для буквиц (fab, память, сигналы) ──
+// fab «⤢» в модалке буквицы — разворачивает вкладкой + глобальная память
+(function () {
+  var modal = document.getElementById('modal');
+  var iframe = document.getElementById('modal-iframe');
+  if (!modal || !iframe) return;
+
+  var fab = document.createElement('button');
+  fab.type = 'button';
+  fab.id = 'vp-modal-fab';
+  fab.innerHTML = '<span class="icon">⤢</span>';
+  fab.title = 'Открыть буквицу на всю вкладку';
+  fab.style.position = 'fixed';
+  fab.style.zIndex = '1002';
+  fab.style.display = 'none';
+  document.body.appendChild(fab);
+
+  var st = document.createElement('style');
+  st.textContent = [
+    '#vp-modal-fab{ right:16px; bottom:16px; width:44px; height:44px;',
+    '  padding:0; border:none; border-radius:8px; background:rgba(0,0,0,.7); color:#fff;',
+    '  flex-direction:column; align-items:center; justify-content:center;',
+    '  cursor:pointer; transition:background .15s; }',
+    '#vp-modal-fab .icon{ font-size:18px; line-height:1; color:#fff; }',
+    '#vp-modal-fab:hover{ background:#ff3333; }',
+    '#vp-modal-fab:focus{ outline:2px solid #00aaff; outline-offset:2px; }'
+  ].join('\n');
+  document.head.appendChild(st);
+
+  function isOpen() { return modal.style.display === 'flex'; }
+  function refresh() { fab.style.display = isOpen() ? 'flex' : 'none'; }
+
+  fab.addEventListener('click', function () {
+    if (!isOpen()) return;
+    var src = iframe.getAttribute('src');
+    if (!src) return;
+    try { localStorage.setItem('vp-expand-mode', 'expanded'); } catch (e1) {}
+    window.open(src, '_blank');
+  });
+
+  setInterval(refresh, 400);
+  refresh();
+})();
+
+// Патч 51: closeModal буквицы сбрасывает глобальный режим (как у статей)
+(function () {
+  var modal = document.getElementById('modal');
+  if (!modal) return;
+  var _obs = new MutationObserver(function () {
+    if (modal.style.display === 'none') {
+      try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e2) {}
+    }
+  });
+  _obs.observe(modal, { attributes: true, attributeFilter: ['style'] });
+})();
+
+// Патч 51: клик по буквице в дереве — expanded → вкладкой
+(function () {
+  var nodes = document.querySelectorAll('.tree-node a');
+  nodes.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      try {
+        if (localStorage.getItem('vp-expand-mode') === 'expanded') {
+          e.preventDefault();
+          window.open(link.getAttribute('href'), '_blank');
+        }
+      } catch (e3) {}
+    }, true); // capture: до штатного обработчика openModal
+  });
+})();
+
+// Патч 51: вкладка буквицы сигналит vp-open → открыть модалку здесь (index)
+window.addEventListener('message', function (ev) {
+  try {
+    var d = ev.data;
+    if (!d || d.type !== 'vp-open' || !d.url) return;
+    var m = String(d.url).match(/page([0-9]+)\.html$/);
+    if (!m) return;
+    var modal = document.getElementById('modal');
+    var iframe = document.getElementById('modal-iframe');
+    if (!modal || !iframe) return;
+    iframe.src = 'pages/page' + m[1] + '.html';
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    modal.setAttribute('aria-hidden', 'false');
+  } catch (e) {}
+});
+
+// Патч 51: fallback — index?vp-open=pages/pageN.html открывает модалку
+(function () {
+  try {
+    var q = new URLSearchParams(window.location.search);
+    var t = q.get('vp-open') || '';
+    var m = t.match(/page([0-9]+)\.html$/);
+    if (!m) return;
+    setTimeout(function () {
+      var modal = document.getElementById('modal');
+      var iframe = document.getElementById('modal-iframe');
+      if (!modal || !iframe) return;
+      iframe.src = 'pages/page' + m[1] + '.html';
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      history.replaceState(null, '', window.location.pathname);
+    }, 200);
+  } catch (e) {}
+})();

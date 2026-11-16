@@ -269,8 +269,7 @@ var POSTS_PAGE_URL = '../nav/posts.html';
 // Патч 23: плавающая квадратная кнопка + память режима + удаление на pages
   // Патч 23c: запуск на DOMContentLoaded — article.js в <head>, кнопки в DOM ещё нет при parse
   function _vpFabInit() {
-    // Патч 50: буквицы — только модалка с главной, без кнопок
-    if (window.location.pathname.indexOf('/pages/') !== -1) return;
+    // Патч 51: кнопки и на буквицах — снимаем ограничение 50
     var isPost = window.location.pathname.indexOf('/posts/') !== -1;
     var b = document.getElementById('vp-expand-btn');
 

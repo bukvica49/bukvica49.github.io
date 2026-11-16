@@ -257,15 +257,58 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     _makeVpOpen();
   };
 
-// подпись кнопки по режиму
-  document.addEventListener('DOMContentLoaded', function () {
+// Патч 23: плавающая квадратная кнопка + память режима + удаление на pages
+  (function () {
+    var isPost = window.location.pathname.indexOf('/posts/') !== -1;
     var b = document.getElementById('vp-expand-btn');
+
+    // pages/pageN.html — кнопки Развернуть/Свернуть не нужны: убираем
+    if (!isPost && b) { b.remove(); return; }
     if (!b) return;
-    if (_inIframe()) {
-      b.innerHTML = '<span class="icon">⤢</span> Развернуть';
-      b.setAttribute('aria-label', 'Открыть статью на всю страницу');
-    } else {
-      b.innerHTML = '<span class="icon">⤡</span> Свернуть';
-      b.setAttribute('aria-label', 'Вернуть статью в модальное окно');
+
+    // режим: 'expanded' (вкладка) | 'modal' (по умолчанию)
+    var getMode = function () {
+      try { return localStorage.getItem('vp-expand-mode') || 'modal'; } catch (e) { return 'modal'; }
+    };
+    window.__vpSetExpandMode = function (m) {
+      try { localStorage.setItem('vp-expand-mode', m); } catch (e) {}
+    };
+
+    // запоминаем режим при действиях
+    var _origToggle = window.toggleExpandFromArticle;
+    window.toggleExpandFromArticle = function () {
+      if (_inIframe()) window.__vpSetExpandMode('expanded');      // развернули
+      else window.__vpSetExpandMode('modal');                     // свернули
+      return _origToggle.apply(this, arguments);
+    };
+
+    // плавающий квадрат (на обычной вкладке — «⤡ Свернуть», в iframe — «⤢ Развернуть»)
+    var _paint = function () {
+      var inFrame = _inIframe();
+      b.className = inFrame ? 'action-btn expand vp-fab' : 'action-btn expand vp-fab';
+      b.innerHTML = inFrame ? '<span class="icon">⤢</span>' : '<span class="icon">⤡</span>';
+      var lbl = document.createElement('span');
+      lbl.className = 'vp-fab-label';
+      lbl.textContent = inFrame ? 'Развернуть' : 'Свернуть';
+      b.appendChild(lbl);
+      b.title = inFrame ? 'Открыть статью на всю страницу' : 'Вернуть статью в модальное окно';
+      b.setAttribute('aria-label', b.title);
+    };
+
+    // CSS для плавающего квадрата
+    if (!document.getElementById('vp-fab-style')) {
+      var st = document.createElement('style'); st.id = 'vp-fab-style';
+      st.textContent = [
+        '.vp-fab{ position:fixed !important; right:18px; bottom:18px; width:52px; height:52px;',
+        '  min-width:52px; padding:0; border-radius:14px; display:flex; flex-direction:column;',
+        '  align-items:center; justify-content:center; z-index:9998; box-shadow:0 4px 16px rgba(0,0,0,.35); }',
+        '.vp-fab .icon{ font-size:22px; line-height:1; }',
+        '.vp-fab-label{ font-size:9px; line-height:1.2; margin-top:2px; opacity:.85; max-width:60px;',
+        '  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }',
+        '.vp-fab:hover{ transform:scale(1.06); transition:.15s; }'
+      ].join('\n');
+      document.head.appendChild(st);
     }
-  });
+
+    _paint();
+  })();

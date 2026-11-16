@@ -240,3 +240,23 @@ window.addEventListener('message', function (ev) {
     }, 200);"
   }"
 })();
+
+// Патч 38b: вкладка-буквица сигналит vp-open — открыть её в модалке index
+window.addEventListener('message', function (ev) {
+  try {
+    var d = ev.data;
+    if (!d || d.type !== 'vp-open' || !d.url) return;
+    var m = String(d.url).match(/page(\\d+)\.html$/);
+    var n = m ? parseInt(m[1], 10) : null;
+    if (!n) return;
+    var modal = document.getElementById('modal');
+    var iframe = document.getElementById('modal-iframe');
+    if (!modal || !iframe) return;
+    iframe.src = 'pages/page' + n + '.html';
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    modal.setAttribute('aria-hidden', 'false');
+    var fab = document.getElementById('vp-modal-fab');
+    if (fab) fab.style.display = 'flex';
+  } catch (e) {}
+});

@@ -209,15 +209,34 @@ window.addEventListener('message', function (ev) {
   var modal = document.getElementById('modal');
   if (!modal || !window.MutationObserver) return;
   var t = function () { return (performance.now() / 1000).toFixed(3); };
+  var NL = String.fromCharCode(10);
   var mo = new MutationObserver(function () {
-    var st = (new Error().stack || '').split('
-').slice(1, 4).join(' | ');
+    var st = (new Error().stack || '').split(NL).slice(1, 4).join(' | ');
     console.log('[vp-chrono]', t(), 'display ->', modal.style.display, st);
   });
   mo.observe(modal, { attributes: true, attributeFilter: ['style'] });
-  document.querySelectorAll('.tree-node a').forEach(function (a) {
-    a.addEventListener('click', function () { console.log('[vp-chrono]', t(), 'клик tree-node'); }, true);
-  });
-  var cb = document.querySelector('.close');
-  if (cb) cb.addEventListener('click', function () { console.log('[vp-chrono]', t(), 'клик .close'); }, true);
+})();
+
+// Патч 38: ?vp-open на index — открыть буквицу в модалке при возврате со свернутой вкладки
+(function () {"
+  var q = new URLSearchParams(window.location.search);"
+  var target = q.get('vp-open');"
+  if (!target) return;"
+  var m = target.match(/page(\d+)\.html$/);"
+  var n = m ? parseInt(m[1], 10) : null;"
+  if (n) {"
+    setTimeout(function () {"
+      if (typeof openModal === 'function') { openModal(n); }"
+      else {"
+        var iframe = document.getElementById('modal-iframe');"
+        var modal = document.getElementById('modal');"
+        if (iframe && modal) {"
+          iframe.src = 'pages/page' + n + '.html';"
+          modal.style.display = 'flex';"
+          document.body.style.overflow = 'hidden';"
+        }"
+      }"
+      history.replaceState(null, '', window.location.pathname);"
+    }, 200);"
+  }"
 })();

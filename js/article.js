@@ -234,7 +234,10 @@ var POSTS_PAGE_URL = '../nav/posts.html';
         _rel = window.location.pathname.split('/').filter(Boolean).slice(-2).join('/');
       }
       try { sessionStorage.setItem('vp-modal-reopen', JSON.stringify({ url: window.location.href, ts: Date.now() })); } catch (e) {}
-      window.location.href = POSTS_PAGE_URL + '?vp-open=' + encodeURIComponent(_rel);
+      // Патч 38: pageN возвращаются на ГЛАВНУЮ (index), postN — на список статей
+      var _isPage = window.location.pathname.indexOf('/pages/') !== -1;
+      var _home = _isPage ? '../index.html' : POSTS_PAGE_URL;
+      window.location.href = _home + '?vp-open=' + encodeURIComponent(_rel);
     };
 
     if (_inIframe()) {

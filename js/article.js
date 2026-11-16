@@ -258,7 +258,9 @@ var POSTS_PAGE_URL = '../nav/posts.html';
   };
 
 // Патч 23: плавающая квадратная кнопка + память режима + удаление на pages
-  (function () {
+// Патч 23: плавающая квадратная кнопка + память режима + удаление на pages
+  // Патч 23c: запуск на DOMContentLoaded — article.js в <head>, кнопки в DOM ещё нет при parse
+  function _vpFabInit() {
     var isPost = window.location.pathname.indexOf('/posts/') !== -1;
     var b = document.getElementById('vp-expand-btn');
 
@@ -282,10 +284,10 @@ var POSTS_PAGE_URL = '../nav/posts.html';
       return _origToggle.apply(this, arguments);
     };
 
-    // плавающий квадрат (на обычной вкладке — «⤡ Свернуть», в iframe — «⤢ Развернуть»)
+    // плавающий квадрат
     var _paint = function () {
       var inFrame = _inIframe();
-      b.className = inFrame ? 'action-btn expand vp-fab' : 'action-btn expand vp-fab';
+      b.className = 'action-btn expand vp-fab';
       b.innerHTML = inFrame ? '<span class="icon">⤢</span>' : '<span class="icon">⤡</span>';
       var lbl = document.createElement('span');
       lbl.className = 'vp-fab-label';
@@ -311,4 +313,9 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     }
 
     _paint();
-  })();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _vpFabInit);
+  } else {
+    _vpFabInit();
+  }

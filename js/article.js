@@ -250,10 +250,16 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     if (window.opener && !window.opener.closed) {
       // Патч 32: сигнал родителю — список сам мгновенно откроет модалку с этой статьёй
       try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e0) {} // Патч 40
-      // Патч 42 (шаг назад): для pages просто вернуться на ЧИСТУЮ главную;
-      // для posts — прежний сигнал (там работает)
+      // Патч 42/43: pages — close + чистая главная; posts — postMessage (как в 32)
       var _isPage = window.location.pathname.indexOf('/pages/') !== -1;
-      if (_isPage) return; // дальше close/fallback обработает
+      if (_isPage) {
+        try { window.close(); } catch (e2) {}
+        setTimeout(function () {
+          if (!window.closed) window.location.href = '../index.html';
+        }, 250);
+        return;
+      }
+      try { window.opener.postMessage({ type: 'vp-open', url: window.location.href }, '*'); } catch (e2) {}
       window.close();
       setTimeout(function () {
         // close мог не сработать (браузер запрещает) — тогда fallback через ?vp-open=

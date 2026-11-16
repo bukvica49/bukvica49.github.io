@@ -35,6 +35,19 @@
         try { window.top.location.href = HOME_PAGE_URL; return; } catch (e2) {}
       }
     }
+    // Патч 34: вкладка открыта fab'ом с index (opener жив) — сигналим родителю:
+    // index-вкладка закроет свою модалку, эта вкладка закроется сама.
+    try {
+      if (window.opener && !window.opener.closed) {
+        window.opener.postMessage({ type: 'vp-home' }, '*');
+        window.close();
+        // если браузер запретил close — fallback: обычный переход
+        setTimeout(function () {
+          if (!window.closed) window.location.href = HOME_PAGE_URL;
+        }, 250);
+        return;
+      }
+    } catch (e) {}
     window.location.href = HOME_PAGE_URL;
   };
 

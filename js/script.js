@@ -186,3 +186,20 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(refresh, 400);
   refresh();
 })();
+
+
+// ── Патч 34: вкладка-буквица просит закрыть модалку на index (возврат на главную) ──
+window.addEventListener('message', function (ev) {
+  try {
+    if (!ev.data || ev.data.type !== 'vp-home') return;
+    var modal = document.getElementById('modal');
+    if (!modal) return;
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+    modal.setAttribute('aria-hidden', 'true');
+    var iframe = document.getElementById('modal-iframe');
+    if (iframe) iframe.src = '';
+    var fab = document.getElementById('vp-modal-fab');
+    if (fab) fab.style.display = 'none';
+  } catch (e) {}
+});

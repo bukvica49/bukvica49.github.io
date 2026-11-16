@@ -58,6 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
   links.forEach((link) => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
+      // Патч 23: память режима — «expanded» → сразу развёрнутая вкладка
+      var _mode = 'modal';
+      try { _mode = localStorage.getItem('vp-expand-mode') || 'modal'; } catch (err) {}
+      if (_mode === 'expanded') {
+        window.open(link.getAttribute("href"), "_blank");
+        return;
+      }
       openModalWithLink(link);
     });
   });

@@ -194,3 +194,39 @@ window.addEventListener('message', function (ev) {
     if (fab) fab.style.display = 'none';
   } catch (e) {}
 });
+
+// Патч 44c: вкладка-буквица сигналит vp-open — открыть её в модалке index
+window.addEventListener('message', function (ev) {
+  try {
+    var d = ev.data;
+    if (!d || d.type !== 'vp-open' || !d.url) return;
+    var m = String(d.url).match(/page([0-9]+)\.html$/);
+    if (!m) return;
+    var modal = document.getElementById('modal');
+    var iframe = document.getElementById('modal-iframe');
+    if (!modal || !iframe) return;
+    iframe.src = 'pages/page' + m[1] + '.html';
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    modal.setAttribute('aria-hidden', 'false');
+  } catch (e) {}
+});
+
+// Патч 44c: ?vp-open=pages/pageN.html — открыть модалку буквицы при загрузке index
+(function () {
+  try {
+    var q = new URLSearchParams(window.location.search);
+    var t = q.get('vp-open') || '';
+    var m = t.match(/page([0-9]+)\.html$/);
+    if (!m) return;
+    setTimeout(function () {
+      var modal = document.getElementById('modal');
+      var iframe = document.getElementById('modal-iframe');
+      if (!modal || !iframe) return;
+      iframe.src = 'pages/page' + m[1] + '.html';
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      history.replaceState(null, '', window.location.pathname);
+    }, 200);
+  } catch (e) {}
+})();

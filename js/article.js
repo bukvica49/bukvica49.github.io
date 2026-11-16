@@ -237,8 +237,9 @@ var POSTS_PAGE_URL = '../nav/posts.html';
       try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e0) {} // Патч 39
       // Патч 38: pageN возвращаются на ГЛАВНУЮ (index), postN — на список статей
       var _isPage = window.location.pathname.indexOf('/pages/') !== -1;
-      // Патч 42: pageN — на чистую главную (без открытия модалки), postN — как было
-      window.location.href = _isPage ? '../index.html' : POSTS_PAGE_URL + '?vp-open=' + encodeURIComponent(_rel);
+      // Патч 44c: fallback — index для буквиц, список для статей (оба с ?vp-open)
+      var _home = _isPage ? '../index.html' : POSTS_PAGE_URL;
+      window.location.href = _home + '?vp-open=' + encodeURIComponent(_rel);
     };
 
     if (_inIframe()) {
@@ -250,15 +251,7 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     if (window.opener && !window.opener.closed) {
       // Патч 32: сигнал родителю — список сам мгновенно откроет модалку с этой статьёй
       try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e0) {} // Патч 40
-      // Патч 42/43: pages — close + чистая главная; posts — postMessage (как в 32)
-      var _isPage = window.location.pathname.indexOf('/pages/') !== -1;
-      if (_isPage) {
-        try { window.close(); } catch (e2) {}
-        setTimeout(function () {
-          if (!window.closed) window.location.href = '../index.html';
-        }, 250);
-        return;
-      }
+      // Патч 44c: единый сигнал родителю — index/posts откроют модалку сами
       try { window.opener.postMessage({ type: 'vp-open', url: window.location.href }, '*'); } catch (e2) {}
       window.close();
       setTimeout(function () {

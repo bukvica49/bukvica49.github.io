@@ -111,13 +111,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (_link) {
           setTimeout(function () { openModalWithLink(_link); }, 150);
         } else {
-          // pages/pageN.html не в списке ссылок — открываем модалку напрямую
-          setTimeout(function () {
-            iframe.src = _reopen;
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            modal.setAttribute('aria-hidden', 'false');
-          }, 150);
+          // Патч 44: буквицы (/pages/) в статьях НЕ открываем — только posts/*
+          if (_reopen.indexOf('/pages/') !== -1 || _reopen.startsWith('pages/')) {
+            console.info('[vp] vp-modal-reopen: буквица пропущена в списке статей');
+          } else {
+            setTimeout(function () {
+              iframe.src = _reopen;
+              modal.style.display = 'flex';
+              document.body.style.overflow = 'hidden';
+              modal.setAttribute('aria-hidden', 'false');
+            }, 150);
+          }
         }
       }
       // не свежая — просто открываем список без модалки (это «Назад»)

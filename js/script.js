@@ -42,8 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.style.overflow = "";
     modal.setAttribute("aria-hidden", "true");
     document.body.focus();
-    // Патч 48: закрыл модалку — глобальный модальный режим
-    try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e2) {}
   }
 
   // --- Клик по узлу дерева → открыть буквицу ---
@@ -53,13 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const href = link.getAttribute("href");
       const match = href.match(/page(\d+)\.html$/);
       const pageNum = match ? parseInt(match[1], 10) : 1;
-      // Патч 48: глобальный режим — вкладкой, если раньше развернул любую буквицу/статью
-      try {
-        if (localStorage.getItem('vp-expand-mode') === 'expanded') {
-          window.open(href, '_blank');
-          return;
-        }
-      } catch (e3) {}
       openModal(pageNum);
     });
   });
@@ -151,103 +142,3 @@ document.addEventListener("DOMContentLoaded", () => {
   // Финальный пересчёт после полной загрузки страницы
   window.addEventListener("load", resizeFamilyTree);
 });
-
-
-
-
-// ── Патч 34: вкладка-буквица просит закрыть модалку на index (возврат на главную) ──
-window.addEventListener('message', function (ev) {
-  try {
-    if (!ev.data || ev.data.type !== 'vp-home') return;
-    var modal = document.getElementById('modal');
-    if (!modal) return;
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-    modal.setAttribute('aria-hidden', 'true');
-    var iframe = document.getElementById('modal-iframe');
-    if (iframe) iframe.src = '';
-    var fab = document.getElementById('vp-modal-fab');
-    if (fab) fab.style.display = 'none';
-  } catch (e) {}
-});
-
-// Патч 44c: вкладка-буквица сигналит vp-open — открыть её в модалке index
-window.addEventListener('message', function (ev) {
-  try {
-    var d = ev.data;
-    if (!d || d.type !== 'vp-open' || !d.url) return;
-    var m = String(d.url).match(/page([0-9]+)\.html$/);
-    if (!m) return;
-    var modal = document.getElementById('modal');
-    var iframe = document.getElementById('modal-iframe');
-    if (!modal || !iframe) return;
-    iframe.src = 'pages/page' + m[1] + '.html';
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    modal.setAttribute('aria-hidden', 'false');
-  } catch (e) {}
-});
-
-// Патч 44c: ?vp-open=pages/pageN.html — открыть модалку буквицы при загрузке index
-(function () {
-  try {
-    var q = new URLSearchParams(window.location.search);
-    var t = q.get('vp-open') || '';
-    var m = t.match(/page([0-9]+)\.html$/);
-    if (!m) return;
-    setTimeout(function () {
-      var modal = document.getElementById('modal');
-      var iframe = document.getElementById('modal-iframe');
-      if (!modal || !iframe) return;
-      iframe.src = 'pages/page' + m[1] + '.html';
-      modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-      history.replaceState(null, '', window.location.pathname);
-    }, 200);
-  } catch (e) {}
-})();
-
-// ── Патч 46: fab «Развернуть» в модалке index (буквицы) ──
-(function () {
-  var modal = document.getElementById('modal');
-  var iframe = document.getElementById('modal-iframe');
-  if (!modal || !iframe) return;
-
-  var fab = document.createElement('button');
-  fab.type = 'button';
-  fab.id = 'vp-modal-fab';
-  fab.innerHTML = '<span class="icon">⤢</span>';
-  fab.title = 'Открыть буквицу на всю вкладку';
-  fab.style.position = 'fixed';
-  fab.style.zIndex = '1002';
-  fab.style.display = 'none';
-  document.body.appendChild(fab);
-
-  var st = document.createElement('style');
-  st.textContent = [
-    '#vp-modal-fab{ right:20px; bottom:20px; width:52px; height:52px;',
-    '  padding:0; border:none; border-radius:10px; background:rgba(0,0,0,.7); color:#fff;',
-    '  flex-direction:column; align-items:center; justify-content:center;',
-    '  cursor:pointer; transition:background .15s, transform .15s; }',
-    '#vp-modal-fab .icon{ font-size:20px; line-height:1; color:#fff; }',
-    '#vp-modal-fab:hover{ background:#ff3333; transform:scale(1.1); }',
-    '#vp-modal-fab:focus{ outline:2px solid #00aaff; outline-offset:2px; }'
-  ].join('\n');
-  document.head.appendChild(st);
-
-  function isOpen() { return modal.style.display === 'flex'; }
-  function refresh() { fab.style.display = isOpen() ? 'flex' : 'none'; }
-
-  fab.addEventListener('click', function () {
-    if (!isOpen()) return;
-    var src = iframe.getAttribute('src');
-    if (!src) return;
-    try { localStorage.setItem('vp-expand-mode', 'expanded'); } catch (e1) {} // Патч 48b
-    window.open(src, '_blank');
-  });
-
-  setInterval(refresh, 400);
-  refresh();
-})();
-// Патч 47: память развернутых буквиц активна
-// Патч 48: глобальная память режима буквиц

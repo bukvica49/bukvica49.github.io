@@ -58,13 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
   links.forEach((link) => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
-      // Патч 23: память режима — «expanded» → сразу развёрнутая вкладка
-      var _mode = 'modal';
-      try { _mode = localStorage.getItem('vp-expand-mode') || 'modal'; } catch (err) {}
-      if (_mode === 'expanded') {
-        window.open(link.getAttribute("href"), "_blank");
-        return;
-      }
       openModalWithLink(link);
     });
   });
@@ -111,17 +104,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (_link) {
           setTimeout(function () { openModalWithLink(_link); }, 150);
         } else {
-          // Патч 44: буквицы (/pages/) в статьях НЕ открываем — только posts/*
-          if (_reopen.indexOf('/pages/') !== -1 || _reopen.startsWith('pages/')) {
-            console.info('[vp] vp-modal-reopen: буквица пропущена в списке статей');
-          } else {
-            setTimeout(function () {
-              iframe.src = _reopen;
-              modal.style.display = 'flex';
-              document.body.style.overflow = 'hidden';
-              modal.setAttribute('aria-hidden', 'false');
-            }, 150);
-          }
+          // pages/pageN.html не в списке ссылок — открываем модалку напрямую
+          setTimeout(function () {
+            iframe.src = _reopen;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            modal.setAttribute('aria-hidden', 'false');
+          }, 150);
         }
       }
       // не свежая — просто открываем список без модалки (это «Назад»)
@@ -256,80 +245,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('resize', adaptArticleLinks);
-
-
-// ── Патч 24: плавающая кнопка «Развернуть» как часть модального окна ──
-(function () {
-  var modal = document.getElementById("modal");
-  var iframe = document.getElementById("modal-iframe");
-  if (!modal || !iframe) return;
-
-  var fab = document.createElement("button");
-  fab.type = "button";
-  fab.id = "vp-modal-fab";
-  fab.innerHTML = '<span class="icon">⤢</span>'; // Патч 30: без текста
-  // Патч 27: z-index инлайном — гарантия поверх затемнения модалки
-  fab.style.position = 'fixed';
-  fab.style.zIndex = '1002';
-  fab.title = "Открыть статью на всю страницу";
-  document.body.appendChild(fab);
-
-  var st = document.createElement("style");
-  st.textContent = [
-    '#vp-modal-fab{ position:fixed; right:20px; bottom:20px; width:52px; height:52px;',
-    '  padding:0; border:none; border-radius:10px; background:rgba(0,0,0,.7); color:#fff;',
-    '  display:none; flex-direction:column; align-items:center; justify-content:center;',
-    '  z-index:1002; cursor:pointer; transition:background .15s, transform .15s; }',
-    '#vp-modal-fab .icon{ font-size:20px; line-height:1; color:#fff; }',
-    '#vp-modal-fab .vp-fab-label{ font-size:9px; line-height:1.2; margin-top:3px; color:#fff; opacity:.9; }',
-    '#vp-modal-fab:hover{ background:#ff3333; transform:scale(1.1); }',
-    '#vp-modal-fab:focus{ outline:2px solid #00aaff; outline-offset:2px; }'
-  ].join('\\n');
-  document.head.appendChild(st);
-
-  function isOpen() {
-    return modal.style.display === "flex";
-  }
-  function refresh() {
-    // Патч 25: кнопка «Развернуть» видна всегда при открытой модалке (режим не влияет)
-    fab.style.display = isOpen() ? 'flex' : 'none';
-  }
-
-  fab.addEventListener("click", function () {
-    if (!isOpen()) return;
-    var src = iframe.getAttribute("src");
-    if (!src) return;
-    try { localStorage.setItem('vp-expand-mode', 'expanded'); } catch (e) {}
-    window.open(src, "_blank"); // без noopener — вкладка сможет «Свернуться» в модалку
-  });
-
-  // следим за открытием/закрытием модалки (display меняется напрямую)
-  var _t = setInterval(refresh, 400);
-  refresh();
-})();
-
-
-// ── Патч 32: мгновенный возврат в модалку по сигналу от вкладки статьи ──
-window.addEventListener('message', function (ev) {
-  try {
-    var d = ev.data;
-    if (!d || d.type !== 'vp-open' || !d.url) return;
-    if (String(d.url).indexOf('/pages/') !== -1) return; // Патч 39: буквицы не открываем в статьях
-    var _links = Array.prototype.slice.call(document.querySelectorAll('.article-link.modal-link'));
-    var _lk = _links.find(function (l) {
-      var h = l.getAttribute('href') || '';
-      return d.url.endsWith(h.split('/').pop());
-    });
-    var modal = document.getElementById('modal');
-    var iframe = document.getElementById('modal-iframe');
-    if (!modal || !iframe) return;
-    if (_lk) {
-      _lk.click();
-    } else {
-      iframe.src = d.url;
-      modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-      modal.setAttribute('aria-hidden', 'false');
-    }
-  } catch (e) {}
-});

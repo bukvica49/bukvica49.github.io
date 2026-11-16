@@ -234,12 +234,7 @@ var POSTS_PAGE_URL = '../nav/posts.html';
         _rel = window.location.pathname.split('/').filter(Boolean).slice(-2).join('/');
       }
       try { sessionStorage.setItem('vp-modal-reopen', JSON.stringify({ url: window.location.href, ts: Date.now() })); } catch (e) {}
-      try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e0) {} // Патч 39
-      // Патч 38: pageN возвращаются на ГЛАВНУЮ (index), postN — на список статей
-      var _isPage = window.location.pathname.indexOf('/pages/') !== -1;
-      // Патч 44c: fallback — index для буквиц, список для статей (оба с ?vp-open)
-      var _home = _isPage ? '../index.html' : POSTS_PAGE_URL;
-      window.location.href = _home + '?vp-open=' + encodeURIComponent(_rel);
+      window.location.href = POSTS_PAGE_URL + '?vp-open=' + encodeURIComponent(_rel);
     };
 
     if (_inIframe()) {
@@ -249,13 +244,10 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     }
 
     if (window.opener && !window.opener.closed) {
-      // Патч 32: сигнал родителю — список сам мгновенно откроет модалку с этой статьёй
-      try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e0) {} // Патч 40
-      // Патч 44c: единый сигнал родителю — index/posts откроют модалку сами
-      try { window.opener.postMessage({ type: 'vp-open', url: window.location.href }, '*'); } catch (e2) {}
+      // вкладку открыли «Развернуть» → пробуем закрыть; если браузер запретил — фолбэк
       window.close();
       setTimeout(function () {
-        // close мог не сработать (браузер запрещает) — тогда fallback через ?vp-open=
+        // если вкладка ещё жива — close не сработал → возвращаемся через ?vp-open=
         if (!window.closed) _makeVpOpen();
       }, 300);
       return;
@@ -265,81 +257,15 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     _makeVpOpen();
   };
 
-// Патч 23: плавающая квадратная кнопка + память режима + удаление на pages
-// Патч 23: плавающая квадратная кнопка + память режима + удаление на pages
-  // Патч 23c: запуск на DOMContentLoaded — article.js в <head>, кнопки в DOM ещё нет при parse
-  function _vpFabInit() {
-    var isPost = window.location.pathname.indexOf('/posts/') !== -1;
+// подпись кнопки по режиму
+  document.addEventListener('DOMContentLoaded', function () {
     var b = document.getElementById('vp-expand-btn');
-
-    // Патч 28: в модалке (iframe) footer-кнопку удалить — там своя fab от postscript.js;
-    // на вкладке — превратить её в закладку «⤡ Свернуть»
+    if (!b) return;
     if (_inIframe()) {
-      if (b) b.remove();
-      return;
-    }
-    if (!b) {
-      // Патч 29: кнопки нет — создаём закладку с нуля (pageN могут иметь другой шаблон)
-      b = document.createElement('button');
-      b.id = 'vp-expand-btn';
-      b.type = 'button';
-      b.className = 'action-btn expand';
-      b.setAttribute('onclick', 'toggleExpandFromArticle()');
-      document.body.appendChild(b);
-      console.info('[vp] fab создан с нуля на', window.location.pathname);
+      b.innerHTML = '<span class="icon">⤢</span> Развернуть';
+      b.setAttribute('aria-label', 'Открыть статью на всю страницу');
     } else {
-      console.info('[vp] fab из footer-кнопки на', window.location.pathname);
+      b.innerHTML = '<span class="icon">⤡</span> Свернуть';
+      b.setAttribute('aria-label', 'Вернуть статью в модальное окно');
     }
-
-    // режим: 'expanded' (вкладка) | 'modal' (по умолчанию)
-    var getMode = function () {
-      try { return localStorage.getItem('vp-expand-mode') || 'modal'; } catch (e) { return 'modal'; }
-    };
-    window.__vpSetExpandMode = function (m) {
-      try { localStorage.setItem('vp-expand-mode', m); } catch (e) {}
-    };
-
-    // запоминаем режим при действиях
-    var _origToggle = window.toggleExpandFromArticle;
-    window.toggleExpandFromArticle = function () {
-      if (_inIframe()) window.__vpSetExpandMode('expanded');      // развернули
-      else window.__vpSetExpandMode('modal');                     // свернули
-      return _origToggle.apply(this, arguments);
-    };
-
-    // плавающий квадрат
-    var _paint = function () {
-      var inFrame = _inIframe();
-      b.className = 'action-btn expand vp-fab';
-      // Патч 30: только стрелка, текст в тултипе title
-      b.innerHTML = inFrame ? '<span class="icon">⤢</span>' : '<span class="icon">⤡</span>';
-      b.title = inFrame ? 'Открыть статью на всю страницу' : 'Вернуть статью в модальное окно';
-      b.setAttribute('aria-label', b.title);
-    };
-
-    // CSS для плавающего квадрата
-    if (!document.getElementById('vp-fab-style')) {
-      var st = document.createElement('style'); st.id = 'vp-fab-style';
-st.textContent = [
-        '.vp-fab{ position:fixed !important; right:0; top:50%; transform:translateY(-50%); width:auto; height:auto;',
-        '  min-width:0; padding:10px 6px; border:none; border-radius:12px 0 0 12px; background:rgba(0,0,0,.7); color:#fff;',
-        '  display:flex; flex-direction:column; align-items:center; gap:6px; z-index:9998;',
-        '  cursor:pointer; transition:background .15s; writing-mode:vertical-rl; }',
-        '.vp-fab .icon{ font-size:18px; line-height:1; color:#fff; writing-mode:horizontal-tb; }',
-        '.vp-fab-label{ font-size:11px; letter-spacing:1px; color:#fff; opacity:.9; }',
-        '.vp-fab:hover{ background:#ff3333; }',
-        '.vp-fab:focus{ outline:2px solid #00aaff; outline-offset:2px; }'
-      ].join('\n');
-      document.head.appendChild(st);
-    }
-
-    // Патч 27: z-index инлайном — закладка точно поверх контента
-    b.style.position = 'fixed';
-    b.style.zIndex = '9998';
-    _paint();
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', _vpFabInit);
-  } else {
-    _vpFabInit();
-  }
+  });

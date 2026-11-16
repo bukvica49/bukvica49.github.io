@@ -300,14 +300,14 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     // CSS для плавающего квадрата
     if (!document.getElementById('vp-fab-style')) {
       var st = document.createElement('style'); st.id = 'vp-fab-style';
-      st.textContent = [
-        '.vp-fab{ position:fixed !important; right:18px; bottom:18px; width:52px; height:52px;',
-        '  min-width:52px; padding:0; border-radius:14px; display:flex; flex-direction:column;',
-        '  align-items:center; justify-content:center; z-index:9998; box-shadow:0 4px 16px rgba(0,0,0,.35); }',
-        '.vp-fab .icon{ font-size:22px; line-height:1; }',
-        '.vp-fab-label{ font-size:9px; line-height:1.2; margin-top:2px; opacity:.85; max-width:60px;',
-        '  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }',
-        '.vp-fab:hover{ transform:scale(1.06); transition:.15s; }'
+st.textContent = [
+        '.vp-fab{ position:fixed !important; right:0; top:58%; width:auto; height:auto;',
+        '  min-width:0; padding:10px 8px; border-radius:12px 0 0 12px; display:flex; flex-direction:column;',
+        '  align-items:center; gap:6px; z-index:9998; box-shadow:0 3px 12px rgba(0,0,0,.3);',
+        '  writing-mode:vertical-rl; }',
+        '.vp-fab .icon{ font-size:18px; line-height:1; writing-mode:horizontal-tb; }',
+        '.vp-fab-label{ font-size:11px; letter-spacing:1px; opacity:.85; }',
+        '.vp-fab:hover{ transform:translateX(-2px); transition:.15s; }'
       ].join('\n');
       document.head.appendChild(st);
     }

@@ -283,11 +283,8 @@ window.addEventListener('resize', adaptArticleLinks);
     return modal.style.display === "flex";
   }
   function refresh() {
-    var open = isOpen();
-    var mode = 'modal';
-    try { mode = localStorage.getItem('vp-expand-mode') || 'modal'; } catch (e) {}
-    // показываем кнопку только когда модалка открыта и режим — модальный
-    fab.style.display = (open && mode === 'modal') ? 'flex' : 'none';
+    // Патч 25: кнопка «Развернуть» видна всегда при открытой модалке (режим не влияет)
+    fab.style.display = isOpen() ? 'flex' : 'none';
   }
 
   fab.addEventListener("click", function () {

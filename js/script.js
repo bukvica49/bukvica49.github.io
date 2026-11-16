@@ -197,3 +197,45 @@ window.addEventListener('message', function (ev) {
     }, 200);
   } catch (e) {}
 })();
+
+// ── Патч 46: fab «Развернуть» в модалке index (буквицы) ──
+(function () {
+  var modal = document.getElementById('modal');
+  var iframe = document.getElementById('modal-iframe');
+  if (!modal || !iframe) return;
+
+  var fab = document.createElement('button');
+  fab.type = 'button';
+  fab.id = 'vp-modal-fab';
+  fab.innerHTML = '<span class="icon">⤢</span>';
+  fab.title = 'Открыть буквицу на всю вкладку';
+  fab.style.position = 'fixed';
+  fab.style.zIndex = '1002';
+  fab.style.display = 'none';
+  document.body.appendChild(fab);
+
+  var st = document.createElement('style');
+  st.textContent = [
+    '#vp-modal-fab{ right:20px; bottom:20px; width:52px; height:52px;',
+    '  padding:0; border:none; border-radius:10px; background:rgba(0,0,0,.7); color:#fff;',
+    '  flex-direction:column; align-items:center; justify-content:center;',
+    '  cursor:pointer; transition:background .15s, transform .15s; }',
+    '#vp-modal-fab .icon{ font-size:20px; line-height:1; color:#fff; }',
+    '#vp-modal-fab:hover{ background:#ff3333; transform:scale(1.1); }',
+    '#vp-modal-fab:focus{ outline:2px solid #00aaff; outline-offset:2px; }'
+  ].join('\n');
+  document.head.appendChild(st);
+
+  function isOpen() { return modal.style.display === 'flex'; }
+  function refresh() { fab.style.display = isOpen() ? 'flex' : 'none'; }
+
+  fab.addEventListener('click', function () {
+    if (!isOpen()) return;
+    var src = iframe.getAttribute('src');
+    if (!src) return;
+    window.open(src, '_blank');
+  });
+
+  setInterval(refresh, 400);
+  refresh();
+})();

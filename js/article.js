@@ -264,9 +264,13 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     var isPost = window.location.pathname.indexOf('/posts/') !== -1;
     var b = document.getElementById('vp-expand-btn');
 
-    // Патч 24: кнопка в footer статей больше не нужна нигде —
-    // единая плавающая кнопка живёт в модальном окне (posts.html) и на вкладке.
-    if (b) { b.remove(); return; }
+    // Патч 28: в модалке (iframe) footer-кнопку удалить — там своя fab от postscript.js;
+    // на вкладке — превратить её в закладку «⤡ Свернуть»
+    if (_inIframe()) {
+      if (b) b.remove();
+      return;
+    }
+    if (!b) return;
 
     // режим: 'expanded' (вкладка) | 'modal' (по умолчанию)
     var getMode = function () {

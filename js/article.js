@@ -237,8 +237,8 @@ var POSTS_PAGE_URL = '../nav/posts.html';
       try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e0) {} // Патч 39
       // Патч 38: pageN возвращаются на ГЛАВНУЮ (index), postN — на список статей
       var _isPage = window.location.pathname.indexOf('/pages/') !== -1;
-      var _home = _isPage ? '../index.html' : POSTS_PAGE_URL;
-      window.location.href = _home + '?vp-open=' + encodeURIComponent(_rel);
+      // Патч 42: pageN — на чистую главную (без открытия модалки), postN — как было
+      window.location.href = _isPage ? '../index.html' : POSTS_PAGE_URL + '?vp-open=' + encodeURIComponent(_rel);
     };
 
     if (_inIframe()) {
@@ -250,9 +250,10 @@ var POSTS_PAGE_URL = '../nav/posts.html';
     if (window.opener && !window.opener.closed) {
       // Патч 32: сигнал родителю — список сам мгновенно откроет модалку с этой статьёй
       try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e0) {} // Патч 40
-      // Патч 41: канал через storage — работает между вкладками всегда
-      try { localStorage.setItem('vp-open-request', JSON.stringify({ url: window.location.href, ts: Date.now() })); } catch (e1) {}
-      try { window.opener.postMessage({ type: 'vp-open', url: window.location.href }, '*'); } catch (e) {}
+      // Патч 42 (шаг назад): для pages просто вернуться на ЧИСТУЮ главную;
+      // для posts — прежний сигнал (там работает)
+      var _isPage = window.location.pathname.indexOf('/pages/') !== -1;
+      if (_isPage) return; // дальше close/fallback обработает
       window.close();
       setTimeout(function () {
         // close мог не сработать (браузер запрещает) — тогда fallback через ?vp-open=

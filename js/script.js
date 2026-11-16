@@ -144,16 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// ── Патч 31: плавающая кнопка «Развернуть» в модалке на index.html ──
-(function () {
-  var modal = document.getElementById("modal");
-  var iframe = document.getElementById("modal-iframe");
-  if (!modal || !iframe) return;
-
-  var fab = document.createElement("button");
-  fab.type = "button";
-  fab.id = "vp-modal-fab";
-  fab.innerHTML = '<span class="icon">⤢</span>'; // Патч 30: без текста
+// Патч 30: без текста
   fab.title = "Открыть страницу на всю вкладку";
   // Патч 27: z-index инлайном — гарантия поверх затемнения
   fab.style.position = "fixed";
@@ -201,81 +192,5 @@ window.addEventListener('message', function (ev) {
     if (iframe) iframe.src = '';
     var fab = document.getElementById('vp-modal-fab');
     if (fab) fab.style.display = 'none';
-  } catch (e) {}
-});
-
-// Патч 37b: хронология модалки
-(function () {
-  var modal = document.getElementById('modal');
-  if (!modal || !window.MutationObserver) return;
-  var t = function () { return (performance.now() / 1000).toFixed(3); };
-  var NL = String.fromCharCode(10);
-  var mo = new MutationObserver(function () {
-    var st = (new Error().stack || '').split(NL).slice(1, 4).join(' | ');
-    console.log('[vp-chrono]', t(), 'display ->', modal.style.display, st);
-  });
-  mo.observe(modal, { attributes: true, attributeFilter: ['style'] });
-})();
-
-// Патч 38: ?vp-open на index — открыть буквицу в модалке при возврате со свернутой вкладки
-(function () {"
-  var q = new URLSearchParams(window.location.search);"
-  var target = q.get('vp-open');"
-  if (!target) return;"
-  var m = target.match(/page(\d+)\.html$/);"
-  var n = m ? parseInt(m[1], 10) : null;"
-  if (n) {"
-    setTimeout(function () {"
-      if (typeof openModal === 'function') { openModal(n); }"
-      else {"
-        var iframe = document.getElementById('modal-iframe');"
-        var modal = document.getElementById('modal');"
-        if (iframe && modal) {"
-          iframe.src = 'pages/page' + n + '.html';"
-          modal.style.display = 'flex';"
-          document.body.style.overflow = 'hidden';"
-        }"
-      }"
-      history.replaceState(null, '', window.location.pathname);"
-    }, 200);"
-  }"
-})();
-
-// Патч 38b: вкладка-буквица сигналит vp-open — открыть её в модалке index
-window.addEventListener('message', function (ev) {
-  try {
-    var d = ev.data;
-    if (!d || d.type !== 'vp-open' || !d.url) return;
-    var m = String(d.url).match(/page(\\d+)\.html$/);
-    var n = m ? parseInt(m[1], 10) : null;
-    if (!n) return;
-    var modal = document.getElementById('modal');
-    var iframe = document.getElementById('modal-iframe');
-    if (!modal || !iframe) return;
-    iframe.src = 'pages/page' + n + '.html';
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    modal.setAttribute('aria-hidden', 'false');
-    var fab = document.getElementById('vp-modal-fab');
-    if (fab) fab.style.display = 'flex';
-  } catch (e) {}
-});
-
-// Патч 41: открыть буквицу по storage-сигналу от вкладки (всегда работает)
-window.addEventListener('storage', function (ev) {
-  try {
-    if (ev.key !== 'vp-open-request' || !ev.newValue) return;
-    var d = JSON.parse(ev.newValue);
-    var m = String(d.url || '').match(/page(\\d+)\.html$/);
-    if (!m) return;
-    var modal = document.getElementById('modal');
-    var iframe = document.getElementById('modal-iframe');
-    if (!modal || !iframe) return;
-    iframe.src = 'pages/page' + m[1] + '.html';
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    modal.setAttribute('aria-hidden', 'false');
-    var fab = document.getElementById('vp-modal-fab');
-    if (fab) fab.style.display = 'flex';
   } catch (e) {}
 });

@@ -310,6 +310,7 @@ window.addEventListener('message', function (ev) {
   try {
     var d = ev.data;
     if (!d || d.type !== 'vp-open' || !d.url) return;
+    if (String(d.url).indexOf('/pages/') !== -1) return; // Патч 39: буквицы не открываем в статьях
     var _links = Array.prototype.slice.call(document.querySelectorAll('.article-link.modal-link'));
     var _lk = _links.find(function (l) {
       var h = l.getAttribute('href') || '';

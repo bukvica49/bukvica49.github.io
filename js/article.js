@@ -234,6 +234,7 @@ var POSTS_PAGE_URL = '../nav/posts.html';
         _rel = window.location.pathname.split('/').filter(Boolean).slice(-2).join('/');
       }
       try { sessionStorage.setItem('vp-modal-reopen', JSON.stringify({ url: window.location.href, ts: Date.now() })); } catch (e) {}
+      try { localStorage.setItem('vp-expand-mode', 'modal'); } catch (e0) {} // Патч 39
       // Патч 38: pageN возвращаются на ГЛАВНУЮ (index), postN — на список статей
       var _isPage = window.location.pathname.indexOf('/pages/') !== -1;
       var _home = _isPage ? '../index.html' : POSTS_PAGE_URL;

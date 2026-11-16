@@ -264,6 +264,9 @@ window.addEventListener('resize', adaptArticleLinks);
   fab.type = "button";
   fab.id = "vp-modal-fab";
   fab.innerHTML = '<span class="icon">⤢</span><span class="vp-fab-label">Развернуть</span>';
+  // Патч 27: z-index инлайном — гарантия поверх затемнения модалки
+  fab.style.position = 'fixed';
+  fab.style.zIndex = '1002';
   fab.title = "Открыть статью на всю страницу";
   document.body.appendChild(fab);
 

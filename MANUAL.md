@@ -26,34 +26,18 @@
 `git push` в `main` → Pages собирается САМ (`.github/workflows/pages.yml`).
 Статус: https://github.com/bukvica49/bukvica49.github.io/actions
 
-## ⚠️ Славянская дата — СВЯЗАНА С АВТОПОСТЕРОМ
-`js/slavic-date.js` — **СГЕНЕРИРОВАННЫЙ**. НЕ ПРАВИТЬ РУКАМИ.
+## ⚠️ Славянская дата — ЕДИНЫЙ ДВИЖОК
+`js/slavic-date.js` — **СГЕНЕРИРОВАН**. НЕ ПРАВИТЬ РУКАМИ.
 
-> В шаблоне `tools/build_site_slavic_js.py` портированы:
-> - `LONG_MONTHS` — длинные имена месяцев (`Божественного Начала`, `Новых Даровъ`, …), источник — `MONTH_DESC` в `slavic_calendar.py`
-> - `cyrYear()` — кириллическая запись года (`҂ЗФЛЕ`), источник — `bukvicy.to_bukvicy`
->
-> При правке этих данных — **сначала править `.py`**, потом `python3 tools/build_site_slavic_js.py`.
+Единственный источник дат: `~/site/vk-poster/calendar_engine.py`
+(якорь 1 Рамхатъ 7535 = 19.09.2026; границы Чертогов — тоже из него).
 
-Источник — в `~/site/vk-poster/`:
-- `chertogs.json` — 16 Чертогов (name, name_gen, patron, tree, pol)
-- `slavic_auto.py` → `CHERTOG_STARTS` — границы по дню года
-- `slavic_calendar.py` — ядро (9-дневка, 9 месяцев, якорь 20.09.2026)
-
-Формат в подвале сайта (совпадает с VK-постом):
-
-    СЕДМИЦА · 4 Айлѣтъ Сороковнiкъ (Мѣсꙗцъ) Новых Даровъ · Лѣто ҂ЗФЛЕ(7535)  Ѿ  С.М.З.Х.
-    ⚡ Чертог Щуки – Богиня-Покровительница Рожана ⚡
-    🌳 Священное Древо: Слива.
-
-### После правки Чертогов / границ — пересобрать
+### После правки движка/буквиц — пересобрать
     cd ~/site/vk-poster && python3 tools/build_site_slavic_js.py
     cd ~/site/bukvica49.github.io
-    git add js/ index.html nav/
-    git commit -m "sync: славянская дата из chertogs.json"
-    git push
+    git add js/ index.html nav/ && git commit -m "sync: slavic-date.js из calendar_engine" && git push
 
-Генератор сам поднимает `?v=N→N+1` в `index.html` + `nav/*.html` (cache-bust).
+Генератор сам поднимает `?v=N→N+1` в `index.html` и `nav/*.html` (cache-bust).
 
 ## Кэш браузера
 Правки видны с **Ctrl+Shift+R**. `?v=N` автоинкрементится генератором.
@@ -126,32 +110,16 @@ CSS/HTML руками — `?v` не меняется, нужен только Ct
 
 ---
 
-# 🆕 Изменения 20.11.2026 (вечер) — буквицы числовые: Лѣто ҂ȤФЛЄ (7535)
+# 🆕 Единый движок и буквицы (обновлено 23.11.2026)
 
-## Таблица буквиц (канон)
-А=1 В=2 Г=3 Д=4 Є=5 (Єсть) Ѕ=6 (зело) Ȥ=7 (Ȥемля) И=8 Θ=9 (фита)
-І=10 К=20 Л=30 М=40 Н=50 Ѯ=60 О=70 П=80 Y=90 (Червль)
-Р=100 С=200 Т=300 У=400 Ф=500 Х=600 Ѱ=700 Ѿ=800 (отъ) Ц=900
-Тысяча: префикс ҂ (҂ × значение).
-Пример: 7535 = ҂(7000) + Ф(500) + Л(30) + Є(5) = ҂ȤФЛЄ ✅
-
-## Где живёт таблица (КРИТИЧНО — три места!)
+## Таблица буквиц — теперь ДВА места (было три)
 1. `bukvicy.py` (vk-poster) — `to_bukvicy(leto)` → шапки постов ВК.
-2. `tools/build_site_slavic_js.py` (vk-poster) — СВОЯ копия таблицы
-   внутри шаблона js. Правка bukvicy.py на подвал сайта НЕ влияет —
-   патчить генератор отдельно!
-3. `js/slavic-date.js` (сайт) — СГЕНЕРИРОВАННЫЙ, руками не править;
-   обновляется генератором (п.2) + коммит/пуш сайт-репо.
+2. `tools/build_site_slavic_js.py` — читает таблицу из bukvicy.py при сборке. Дубля больше нет.
+3. `js/slavic-date.js` — сгенерирован, руками не править.
 
-## Как менять буквицы (порядок)
-1) bukvicy.py (ONES/TENS/HUNDREDS + docstring)
-2) tools/build_site_slavic_js.py (та же таблица в шаблоне!)
-3) python3 -c "from bukvicy import to_bukvicy; assert to_bukvicy(7535)=='҂ȤФЛЄ'"
-4) python3 tools/build_site_slavic_js.py
-5) grep -o "5:'Є'" ~/site/bukvica49.github.io/js/slavic-date.js
-6) пуш обоих репо; live: Ctrl+Shift+R (Pages-кэш до 10 мин)
+## Как менять буквицы
+1) bukvicy.py → 2) `python3 -c "from bukvicy import to_bukvicy; assert to_bukvicy(7535)=='҂ȤФЛЄ'"` → 3) генератор → 4) пуш обоих репо, Ctrl+Shift+R.
 
 ## Грабли (не повторять)
-- Генератор НЕ читает bukvicy.py — таблица задублирована, править ОБА файла.
-- Таблица в генераторе внутри f-string ({{ }}) — замену делать по
-  внутреннему тексту, скобки не трогать.
+- НЕ добавлять в код компенсации «+1 день» — только `post_slavic_date()` (граница суток 18:00).
+- Push в `bukvica49.github.io` ≠ push в `vk-poster`. Два разных репо. `.bak` — не коммитить.

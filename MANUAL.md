@@ -12,7 +12,7 @@
 - `css/styles.css`, `css/navstyles.css` — стили
 - `js/slavic-date.js` — ⚠️ СГЕНЕРИРОВАННЫЙ
 - `js/script.js` — общий JS
-- `pages/`, `posts/` — доп. страницы
+- `pages/`, `posts/` — доп. страницы (все с фавиконом ../az.png)
 - `.github/workflows/pages.yml` — деплой
 
 ## Локальный просмотр

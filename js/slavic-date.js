@@ -95,7 +95,7 @@
   function slavicDate(dt) {
     if (!(dt instanceof Date)) dt = new Date();
     const sl = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
-    if (dt.getHours() >= DAY_START_HOUR) sl.setDate(sl.getDate() + 1);
+    if (dt.getHours() < DAY_START_HOUR) sl.setDate(sl.getDate() - 1);
     return sl;
   }
 
